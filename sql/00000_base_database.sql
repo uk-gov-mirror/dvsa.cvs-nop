@@ -1,5 +1,5 @@
 --liquibase formatted sql
---changeset chris.peska:create-multiple-tables:1 splitStatements:true endDelimiter:; context:dev
+--changeset liquibase:create-multiple-tables:1 splitStatements:true endDelimiter:; context:dev
 
 SET @OLD_UNIQUE_CHECKS = @@UNIQUE_CHECKS, UNIQUE_CHECKS = 0;
 SET @OLD_FOREIGN_KEY_CHECKS = @@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS = 0;
