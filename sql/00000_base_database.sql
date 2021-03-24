@@ -6,9 +6,7 @@ SET @OLD_FOREIGN_KEY_CHECKS = @@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS = 0;
 SET @OLD_SQL_MODE = @@SQL_MODE, SQL_MODE =
         'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
 
--- -----------------------------------------------------
--- Table `vehicle`
--- -----------------------------------------------------
+
 CREATE TABLE IF NOT EXISTS `vehicle`
 (
     `id`            INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -24,9 +22,6 @@ CREATE TABLE IF NOT EXISTS `vehicle`
     DEFAULT CHARACTER SET = latin1;
 
 
--- -----------------------------------------------------
--- Table `make_model`
--- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `make_model`
 (
     `id`                   INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -47,9 +42,6 @@ CREATE TABLE IF NOT EXISTS `make_model`
     ENGINE = InnoDB;
 
 
--- -----------------------------------------------------
--- Table `vehicle_class`
--- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `vehicle_class`
 (
     `id`                   INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -65,9 +57,7 @@ CREATE TABLE IF NOT EXISTS `vehicle_class`
 )
     ENGINE = InnoDB;
 
--- -----------------------------------------------------
--- Table `vehicle_subclass`
--- -----------------------------------------------------
+
 CREATE TABLE IF NOT EXISTS `vehicle_subclass`
 (
     `id`               INT          NOT NULL AUTO_INCREMENT,
@@ -85,9 +75,6 @@ CREATE TABLE IF NOT EXISTS `vehicle_subclass`
     ENGINE = InnoDB;
 
 
--- -----------------------------------------------------
--- Table `identity`
--- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `identity`
 (
     `id`          INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -102,10 +89,6 @@ CREATE TABLE IF NOT EXISTS `identity`
     ENGINE = InnoDB;
 
 
-
--- -- -----------------------------------------------------
--- -- Table `contact_details`
--- -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `contact_details`
 (
     `id`              INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -125,9 +108,7 @@ CREATE TABLE IF NOT EXISTS `contact_details`
 )
     ENGINE = InnoDB;
 
--- -- -----------------------------------------------------
--- -- Table ``
--- -- -----------------------------------------------------
+
 CREATE TABLE IF NOT EXISTS `brakes`
 (
     `id`                    INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -151,9 +132,7 @@ CREATE TABLE IF NOT EXISTS `brakes`
 )
     ENGINE = InnoDB;
 
--- -----------------------------------------------------
--- Table `technical_record`
--- -----------------------------------------------------
+
 CREATE TABLE IF NOT EXISTS `technical_record`
 (
     `id`                               INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -294,9 +273,7 @@ CREATE TABLE IF NOT EXISTS `technical_record`
 )
     ENGINE = InnoDB;
 
--- -----------------------------------------------------
--- Table `axle_spacing`
--- -----------------------------------------------------
+
 CREATE TABLE IF NOT EXISTS `axle_spacing`
 (
     `id`                  INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -314,9 +291,7 @@ CREATE TABLE IF NOT EXISTS `axle_spacing`
 )
     ENGINE = InnoDB;
 
--- -----------------------------------------------------
--- Table `microfilm`
--- -----------------------------------------------------
+
 CREATE TABLE IF NOT EXISTS `microfilm`
 (
     `id`                    INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -335,9 +310,7 @@ CREATE TABLE IF NOT EXISTS `microfilm`
 )
     ENGINE = InnoDB;
 
--- -----------------------------------------------------
--- Table `plate`
--- -----------------------------------------------------
+
 CREATE TABLE IF NOT EXISTS `plate`
 (
     `id`                  INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -356,9 +329,7 @@ CREATE TABLE IF NOT EXISTS `plate`
 )
     ENGINE = InnoDB;
 
--- -----------------------------------------------------
--- Table `fuel_emission`
--- -----------------------------------------------------
+
 CREATE TABLE IF NOT EXISTS `fuel_emission`
 (
     `id`               INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -374,9 +345,6 @@ CREATE TABLE IF NOT EXISTS `fuel_emission`
     ENGINE = InnoDB;
 
 
--- -----------------------------------------------------
--- Table `test_station`
--- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `test_station`
 (
     `id`          INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -389,9 +357,6 @@ CREATE TABLE IF NOT EXISTS `test_station`
     ENGINE = InnoDB;
 
 
--- -----------------------------------------------------
--- Table `tester`
--- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `tester`
 (
     `id`            INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -406,9 +371,6 @@ CREATE TABLE IF NOT EXISTS `tester`
     ENGINE = InnoDB;
 
 
--- -----------------------------------------------------
--- Table `preparer`
--- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `preparer`
 (
     `id`          INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -421,9 +383,7 @@ CREATE TABLE IF NOT EXISTS `preparer`
 )
     ENGINE = InnoDB;
 
--- -----------------------------------------------------
--- Table `test_type`
--- -----------------------------------------------------
+
 CREATE TABLE IF NOT EXISTS `test_type`
 (
     `id`                     INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -437,9 +397,6 @@ CREATE TABLE IF NOT EXISTS `test_type`
     ENGINE = InnoDB;
 
 
--- -----------------------------------------------------
--- Table `test_record`
--- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `test_record`
 (
     `id`                                INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -545,9 +502,7 @@ CREATE TABLE IF NOT EXISTS `test_record`
 )
     ENGINE = InnoDB;
 
--- -----------------------------------------------------
--- Table `custom_defect`
--- -----------------------------------------------------
+
 CREATE TABLE IF NOT EXISTS `custom_defect`
 (
     `id`              INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -564,9 +519,8 @@ CREATE TABLE IF NOT EXISTS `custom_defect`
         ON UPDATE NO ACTION
 )
     ENGINE = InnoDB;
--- -----------------------------------------------------
--- Table `axles`
--- -----------------------------------------------------
+
+
 CREATE TABLE IF NOT EXISTS `axles`
 (
     `id`                  INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -598,9 +552,7 @@ CREATE TABLE IF NOT EXISTS `axles`
 )
     ENGINE = InnoDB;
 
--- -----------------------------------------------------
--- Table `tire`
--- -----------------------------------------------------
+
 CREATE TABLE IF NOT EXISTS `tire`
 (
     `id`                  INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -618,9 +570,6 @@ CREATE TABLE IF NOT EXISTS `tire`
     ENGINE = InnoDB;
 
 
--- -----------------------------------------------------
--- Table `defects`
--- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `defects`
 (
     `id`                 INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -642,9 +591,6 @@ CREATE TABLE IF NOT EXISTS `defects`
     ENGINE = InnoDB;
 
 
--- -----------------------------------------------------
--- Table `location`
--- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `location`
 (
     `id`           INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -663,9 +609,6 @@ CREATE TABLE IF NOT EXISTS `location`
     ENGINE = InnoDB;
 
 
--- -----------------------------------------------------
--- Table `test_defect`
--- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `test_defect`
 (
     `id`                INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -698,9 +641,6 @@ CREATE TABLE IF NOT EXISTS `test_defect`
     ENGINE = InnoDB;
 
 
--- -----------------------------------------------------
--- Table `adr`
--- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `adr`
 (
     `id`                        INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -747,9 +687,7 @@ CREATE TABLE IF NOT EXISTS `adr`
 )
     ENGINE = InnoDB;
 
--- -----------------------------------------------------
--- Table `additional_notes_number`
--- -----------------------------------------------------
+
 CREATE TABLE IF NOT EXISTS `additional_notes_number`
 (
     `id`          INT UNSIGNED NOT NULL,
@@ -767,9 +705,6 @@ CREATE TABLE IF NOT EXISTS `additional_notes_number`
     ENGINE = InnoDB;
 
 
--- -----------------------------------------------------
--- Table `additional_notes_guidance`
--- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `additional_notes_guidance`
 (
     `id`            INT UNSIGNED NOT NULL,
@@ -786,9 +721,7 @@ CREATE TABLE IF NOT EXISTS `additional_notes_guidance`
 )
     ENGINE = InnoDB;
 
--- -----------------------------------------------------
--- Table `dangerous_goods`
--- -----------------------------------------------------
+
 CREATE TABLE IF NOT EXISTS `dangerous_goods`
 (
     `id`          INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -799,9 +732,6 @@ CREATE TABLE IF NOT EXISTS `dangerous_goods`
     ENGINE = InnoDB;
 
 
--- -----------------------------------------------------
--- Table `permitted_dangerous_goods`
--- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `permitted_dangerous_goods`
 (
     `id`                 INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -824,9 +754,6 @@ CREATE TABLE IF NOT EXISTS `permitted_dangerous_goods`
     ENGINE = InnoDB;
 
 
--- -----------------------------------------------------
--- Table `productListUnNo`
--- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `productListUnNo`
 (
     `id`          INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -839,9 +766,6 @@ CREATE TABLE IF NOT EXISTS `productListUnNo`
     ENGINE = InnoDB;
 
 
--- -----------------------------------------------------
--- Table `adr_productListUnNo`
--- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `adr_productListUnNo`
 (
     `id`                 INT UNSIGNED NOT NULL AUTO_INCREMENT,
