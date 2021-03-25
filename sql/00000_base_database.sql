@@ -35,6 +35,7 @@ CREATE TABLE IF NOT EXISTS `make_model`
     `bodyTypeCode`         CHAR(1),
     `bodyTypeDescription`  VARCHAR(17),
     `fuelPropulsionSystem` VARCHAR(12),
+    `dtpCode`              VARCHAR(6),
     `fingerprint`          VARCHAR(32)  NOT NULL,
     PRIMARY KEY (`id`),
     UNIQUE INDEX `idx_fingerprint_uq` (`fingerprint` ASC)
