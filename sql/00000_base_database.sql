@@ -525,7 +525,7 @@ CREATE TABLE IF NOT EXISTS `axles`
 (
     `id`                  INT UNSIGNED NOT NULL AUTO_INCREMENT,
     `technical_record_id` INT UNSIGNED NOT NULL,
-    `tire_id`             INT UNSIGNED NOT NULL,
+    `tyre_id`             INT UNSIGNED NOT NULL,
     `axleNumber`          INT          NOT NULL,
     `parkingBrakeMrk`     TINYINT(1),
     `kerbWeight`          INT UNSIGNED,
@@ -544,8 +544,8 @@ CREATE TABLE IF NOT EXISTS `axles`
         ON DELETE NO ACTION
         ON UPDATE NO ACTION,
 
-    FOREIGN KEY (`tire_id`)
-        REFERENCES `tire` (`id`)
+    FOREIGN KEY (`tyre_id`)
+        REFERENCES `tyre` (`id`)
         ON DELETE NO ACTION
         ON UPDATE NO ACTION
 
@@ -553,7 +553,7 @@ CREATE TABLE IF NOT EXISTS `axles`
     ENGINE = InnoDB;
 
 
-CREATE TABLE IF NOT EXISTS `tire`
+CREATE TABLE IF NOT EXISTS `tyre`
 (
     `id`                  INT UNSIGNED NOT NULL AUTO_INCREMENT,
     `tyreSize`            VARCHAR(12),
