@@ -1,7 +1,5 @@
 --liquibase formatted sql
---changeset liquibase:create
--multiple-tables:1 splitStatements:true endDelimiter:;
-context:dev
+--changeset liquibase:create -multiple-tables:1 splitStatements:true endDelimiter:; context:dev
 
 SET @OLD_UNIQUE_CHECKS = @@UNIQUE_CHECKS, UNIQUE_CHECKS = 0;
 SET @OLD_FOREIGN_KEY_CHECKS = @@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS = 0;
@@ -111,27 +109,6 @@ CREATE TABLE IF NOT EXISTS `contact_details`
     ENGINE = InnoDB;
 
 
-CREATE TABLE IF NOT EXISTS `psv_brakes`
-(
-    `id`                   INT UNSIGNED NOT NULL AUTO_INCREMENT,
-    `brakeCodeOriginal`    VARCHAR(3),
-    `brakeCode`            VARCHAR(6),
-    `dataTrBrakeOne`       VARCHAR(60),
-    `dataTrBrakeTwo`       VARCHAR(60),
-    `dataTrBrakeThree`     VARCHAR(60),
-    `retarderBrakeOne`     VARCHAR(9),
-    `retarderBrakeTwo`     VARCHAR(9),
-    `serviceBrakeForceA`   MEDIUMINT UNSIGNED,
-    `secondaryBrakeForceA` MEDIUMINT UNSIGNED,
-    `parkingBrakeForceA`   MEDIUMINT UNSIGNED,
-    `serviceBrakeForceB`   MEDIUMINT UNSIGNED,
-    `secondaryBrakeForceB` MEDIUMINT UNSIGNED,
-    `parkingBrakeForceB`   MEDIUMINT UNSIGNED,
-    PRIMARY KEY (`id`)
-)
-    ENGINE = InnoDB;
-
-
 CREATE TABLE IF NOT EXISTS `technical_record`
 (
     `id`                               INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -219,7 +196,6 @@ CREATE TABLE IF NOT EXISTS `technical_record`
     `updateType`                       VARCHAR(16),
     `numberOfSeatbelts`                VARCHAR(99),
     `seatbeltInstallationApprovalDate` DATE,
-    `brakes_id`                        INT UNSIGNED NOT NULL,
     PRIMARY KEY (`id`),
 
     FOREIGN KEY (`vehicle_id`)
@@ -262,16 +238,40 @@ CREATE TABLE IF NOT EXISTS `technical_record`
         ON DELETE NO ACTION
         ON UPDATE NO ACTION,
 
-    FOREIGN KEY (`brakes_id`)
-        REFERENCES `brakes` (`id`)
-        ON DELETE NO ACTION
-        ON UPDATE NO ACTION,
-
     INDEX `idx_vehicle_id` (`vehicle_id` ASC),
     INDEX `idx_make_model_id` (`make_model_id` ASC),
     INDEX `idx_vehicle_class_id` (`vehicle_class_id` ASC),
     INDEX `idx_createdBy_Id` (`createdBy_Id` ASC),
     INDEX `idx_lastUpdatedBy_Id` (`lastUpdatedBy_Id` ASC)
+)
+    ENGINE = InnoDB;
+
+
+CREATE TABLE IF NOT EXISTS `psv_brakes`
+(
+    `id`                   INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `technical_record_id`  INT UNSIGNED NOT NULL,
+    `brakeCodeOriginal`    VARCHAR(3),
+    `brakeCode`            VARCHAR(6),
+    `dataTrBrakeOne`       VARCHAR(60),
+    `dataTrBrakeTwo`       VARCHAR(60),
+    `dataTrBrakeThree`     VARCHAR(60),
+    `retarderBrakeOne`     VARCHAR(9),
+    `retarderBrakeTwo`     VARCHAR(9),
+    `serviceBrakeForceA`   MEDIUMINT UNSIGNED,
+    `secondaryBrakeForceA` MEDIUMINT UNSIGNED,
+    `parkingBrakeForceA`   MEDIUMINT UNSIGNED,
+    `serviceBrakeForceB`   MEDIUMINT UNSIGNED,
+    `secondaryBrakeForceB` MEDIUMINT UNSIGNED,
+    `parkingBrakeForceB`   MEDIUMINT UNSIGNED,
+    PRIMARY KEY (`id`),
+
+    UNIQUE INDEX `idx_psv_brakes_technical_record_id_uq` (`technical_record_id` ASC),
+
+    FOREIGN KEY (`technical_record_id`)
+        REFERENCES `technical_record` (`id`)
+        ON DELETE NO ACTION
+        ON UPDATE NO ACTION
 )
     ENGINE = InnoDB;
 
