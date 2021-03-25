@@ -1,5 +1,7 @@
 --liquibase formatted sql
---changeset liquibase:create-multiple-tables:1 splitStatements:true endDelimiter:; context:dev
+--changeset liquibase:create
+-multiple-tables:1 splitStatements:true endDelimiter:;
+context:dev
 
 SET @OLD_UNIQUE_CHECKS = @@UNIQUE_CHECKS, UNIQUE_CHECKS = 0;
 SET @OLD_FOREIGN_KEY_CHECKS = @@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS = 0;
@@ -109,25 +111,22 @@ CREATE TABLE IF NOT EXISTS `contact_details`
     ENGINE = InnoDB;
 
 
-CREATE TABLE IF NOT EXISTS `brakes`
+CREATE TABLE IF NOT EXISTS `psv_brakes`
 (
-    `id`                    INT UNSIGNED NOT NULL AUTO_INCREMENT,
-    `brakeCodeOriginal`     VARCHAR(3),
-    `brakeCode`             VARCHAR(6),
-    `dataTrBrakeOne`        VARCHAR(60),
-    `dataTrBrakeTwo`        VARCHAR(60),
-    `dataTrBrakeThree`      VARCHAR(60),
-    `retarderBrakeOne`      VARCHAR(9),
-    `retarderBrakeTwo`      VARCHAR(9),
-    `dtpNumber`             VARCHAR(6),
-    `loadSensingValve`      TINYINT(1),
-    `antilockBrakingSystem` TINYINT(1),
-    `serviceBrakeForceA`    MEDIUMINT UNSIGNED,
-    `secondaryBrakeForceA`  MEDIUMINT UNSIGNED,
-    `parkingBrakeForceA`    MEDIUMINT UNSIGNED,
-    `serviceBrakeForceB`    MEDIUMINT UNSIGNED,
-    `secondaryBrakeForceB`  MEDIUMINT UNSIGNED,
-    `parkingBrakeForceB`    MEDIUMINT UNSIGNED,
+    `id`                   INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `brakeCodeOriginal`    VARCHAR(3),
+    `brakeCode`            VARCHAR(6),
+    `dataTrBrakeOne`       VARCHAR(60),
+    `dataTrBrakeTwo`       VARCHAR(60),
+    `dataTrBrakeThree`     VARCHAR(60),
+    `retarderBrakeOne`     VARCHAR(9),
+    `retarderBrakeTwo`     VARCHAR(9),
+    `serviceBrakeForceA`   MEDIUMINT UNSIGNED,
+    `secondaryBrakeForceA` MEDIUMINT UNSIGNED,
+    `parkingBrakeForceA`   MEDIUMINT UNSIGNED,
+    `serviceBrakeForceB`   MEDIUMINT UNSIGNED,
+    `secondaryBrakeForceB` MEDIUMINT UNSIGNED,
+    `parkingBrakeForceB`   MEDIUMINT UNSIGNED,
     PRIMARY KEY (`id`)
 )
     ENGINE = InnoDB;
@@ -212,6 +211,9 @@ CREATE TABLE IF NOT EXISTS `technical_record`
     `manufacturerNotes`                VARCHAR(1024),
     `noOfAxles`                        TINYINT(1),
     `brakeCode`                        VARCHAR(6),
+    `dtpNumber`                        VARCHAR(6),
+    `loadSensingValve`                 TINYINT(1),
+    `antilockBrakingSystem`            TINYINT(1),
     `createdBy_Id`                     INT UNSIGNED NOT NULL,
     `lastUpdatedBy_Id`                 INT UNSIGNED NOT NULL,
     `updateType`                       VARCHAR(16),
