@@ -36,9 +36,10 @@ CREATE TABLE IF NOT EXISTS `make_model`
     `bodyTypeDescription`  VARCHAR(17),
     `fuelPropulsionSystem` VARCHAR(12),
     `dtpCode`              VARCHAR(6),
-    `fingerprint`          VARCHAR(32)  NOT NULL,
-    PRIMARY KEY (`id`),
-    UNIQUE INDEX `idx_fingerprint_uq` (`fingerprint` ASC)
+    `fingerprint` VARCHAR(32) GENERATED ALWAYS AS (md5(
+            concat_ws('|', make, model, chassisMake, chassisModel, bodyMake, bodyModel, modelLiteral, bodyTypeCode,
+                      bodyTypeDescription, fuelPropulsionSystem, dtpCode))) STORED UNIQUE KEY NOT NULL,
+    PRIMARY KEY (`id`)
 )
     ENGINE = InnoDB;
 
@@ -52,9 +53,10 @@ CREATE TABLE IF NOT EXISTS `vehicle_class`
     `vehicleSize`          VARCHAR(5),
     `vehicleConfiguration` VARCHAR(20),
     `euVehicleCategory`    VARCHAR(5),
-    `fingerprint`          VARCHAR(32)  NOT NULL,
-    PRIMARY KEY (`id`),
-    UNIQUE INDEX `idx_fingerprint_uq` (`fingerprint` ASC)
+    `fingerprint` VARCHAR(32) GENERATED ALWAYS AS (md5(
+            concat_ws('|', code, description, vehicleType, vehicleSize, vehicleConfiguration,
+                      euVehicleCategory))) STORED UNIQUE KEY NOT NULL,
+    PRIMARY KEY (`id`)
 )
     ENGINE = InnoDB;
 
@@ -64,10 +66,8 @@ CREATE TABLE IF NOT EXISTS `vehicle_subclass`
     `id`               INT          NOT NULL AUTO_INCREMENT,
     `vehicle_class_id` INT UNSIGNED NOT NULL,
     `subclass`         VARCHAR(1),
-    `fingerprint`      VARCHAR(32)  NOT NULL,
+    `fingerprint`      VARCHAR(32) GENERATED ALWAYS AS (md5(concat_ws('|', vehicle_class_id, subclass))) STORED UNIQUE KEY NOT NULL,
     PRIMARY KEY (`id`),
-
-    UNIQUE INDEX `idx_fingerprint_uq` (`fingerprint` ASC),
     FOREIGN KEY (`vehicle_class_id`)
         REFERENCES `vehicle_class` (`id`)
         ON DELETE NO ACTION
@@ -81,10 +81,9 @@ CREATE TABLE IF NOT EXISTS `identity`
     `id`          INT UNSIGNED NOT NULL AUTO_INCREMENT,
     `identityId`  VARCHAR(36),
     `name`        VARCHAR(320),
-    `fingerprint` VARCHAR(32)  NOT NULL,
+    `fingerprint` VARCHAR(32) GENERATED ALWAYS AS (md5(concat_ws('|', identityId, name))) STORED UNIQUE KEY NOT NULL,
     PRIMARY KEY (`id`),
 
-    UNIQUE INDEX `idx_fingerprint_uq` (`fingerprint` ASC),
     INDEX `idx_name` (`name` ASC)
 )
     ENGINE = InnoDB;
@@ -102,10 +101,10 @@ CREATE TABLE IF NOT EXISTS `contact_details`
     `emailAddress`    VARCHAR(255),
     `telephoneNumber` VARCHAR(25),
     `faxNumber`       VARCHAR(25),
-    `fingerprint`     VARCHAR(32)  NOT NULL,
-    PRIMARY KEY (`id`),
-
-    UNIQUE INDEX `idx_fingerprint_uq` (`fingerprint` ASC)
+    `fingerprint` VARCHAR(32) GENERATED ALWAYS AS (md5(
+            concat_ws('|', name, address1, address2, postTown, address3, postCode, emailAddress, telephoneNumber,
+                      faxNumber))) STORED UNIQUE KEY NOT NULL,
+    PRIMARY KEY (`id`)
 )
     ENGINE = InnoDB;
 
@@ -199,6 +198,8 @@ CREATE TABLE IF NOT EXISTS `technical_record`
     `seatbeltInstallationApprovalDate` DATE,
     PRIMARY KEY (`id`),
 
+    UNIQUE INDEX `idx_technical_record_uq` (`vehicle_id` ASC, `createdAt` ASC),
+
     FOREIGN KEY (`vehicle_id`)
         REFERENCES `vehicle` (`id`)
         ON DELETE NO ACTION
@@ -265,14 +266,19 @@ CREATE TABLE IF NOT EXISTS `psv_brakes`
     `serviceBrakeForceB`   MEDIUMINT UNSIGNED,
     `secondaryBrakeForceB` MEDIUMINT UNSIGNED,
     `parkingBrakeForceB`   MEDIUMINT UNSIGNED,
+    `fingerprint` VARCHAR(32) GENERATED ALWAYS AS (md5(
+            concat_ws('|', technical_record_id, brakeCodeOriginal, brakeCode, dataTrBrakeOne, dataTrBrakeTwo,
+                      dataTrBrakeThree, retarderBrakeOne, retarderBrakeTwo, serviceBrakeForceA, secondaryBrakeForceA,
+                      parkingBrakeForceA, serviceBrakeForceB, secondaryBrakeForceB,
+                      parkingBrakeForceB))) STORED UNIQUE KEY NOT NULL,
     PRIMARY KEY (`id`),
-
-    UNIQUE INDEX `idx_psv_brakes_technical_record_id_uq` (`technical_record_id` ASC),
-
     FOREIGN KEY (`technical_record_id`)
         REFERENCES `technical_record` (`id`)
         ON DELETE NO ACTION
-        ON UPDATE NO ACTION
+        ON UPDATE NO ACTION,
+
+    UNIQUE INDEX `idx_psv_brakes_technical_record_id_uq` (`technical_record_id` ASC)
+
 )
     ENGINE = InnoDB;
 
@@ -283,8 +289,8 @@ CREATE TABLE IF NOT EXISTS `axle_spacing`
     `technical_record_id` INT UNSIGNED NOT NULL,
     `axles`               VARCHAR(5),
     `value`               MEDIUMINT UNSIGNED,
+    `fingerprint` VARCHAR(32) GENERATED ALWAYS AS (md5(concat_ws('|', technical_record_id, axles, value))) STORED UNIQUE KEY NOT NULL,
     PRIMARY KEY (`id`),
-
     FOREIGN KEY (`technical_record_id`)
         REFERENCES `technical_record` (`id`)
         ON DELETE NO ACTION
@@ -302,8 +308,10 @@ CREATE TABLE IF NOT EXISTS `microfilm`
     `microfilmDocumentType` VARCHAR(31),
     `microfilmRollNumber`   VARCHAR(5),
     `microfilmSerialNumber` VARCHAR(4),
+    `fingerprint` VARCHAR(32) GENERATED ALWAYS AS (md5(
+            concat_ws('|', technical_record_id, microfilmDocumentType, microfilmRollNumber,
+                      microfilmSerialNumber))) STORED UNIQUE KEY NOT NULL,
     PRIMARY KEY (`id`),
-
     FOREIGN KEY (`technical_record_id`)
         REFERENCES `technical_record` (`id`)
         ON DELETE NO ACTION
@@ -322,6 +330,9 @@ CREATE TABLE IF NOT EXISTS `plate`
     `plateIssueDate`      DATE,
     `plateReasonForIssue` VARCHAR(16),
     `plateIssuer`         VARCHAR(150),
+    `fingerprint` VARCHAR(32) GENERATED ALWAYS AS (md5(
+            concat_ws('|', technical_record_id, plateSerialNumber, plateIssueDate, plateReasonForIssue,
+                      plateIssuer))) STORED UNIQUE KEY NOT NULL,
     PRIMARY KEY (`id`),
     FOREIGN KEY (`technical_record_id`)
         REFERENCES `technical_record` (`id`)
@@ -340,10 +351,9 @@ CREATE TABLE IF NOT EXISTS `fuel_emission`
     `description`      VARCHAR(32),
     `emissionStandard` VARCHAR(21),
     `fuelType`         VARCHAR(13),
-    `fingerprint`      VARCHAR(32)  NOT NULL,
-    PRIMARY KEY (`id`),
-
-    UNIQUE INDEX `idx_fingerprint_uq` (`fingerprint` ASC)
+    `fingerprint` VARCHAR(32) GENERATED ALWAYS AS (md5(
+            concat_ws('|', modTypeCode, description, emissionStandard, fuelType))) STORED UNIQUE KEY NOT NULL,
+    PRIMARY KEY (`id`)
 )
     ENGINE = InnoDB;
 
@@ -354,7 +364,18 @@ CREATE TABLE IF NOT EXISTS `test_station`
     `pNumber`     VARCHAR(20),
     `name`        VARCHAR(1000),
     `type`        VARCHAR(4),
-    `fingerprint` VARCHAR(32)  NOT NULL,
+    `fingerprint` VARCHAR(32) GENERATED ALWAYS AS (md5(concat_ws('|', pNumber, name, type))) STORED UNIQUE KEY NOT NULL,
+    PRIMARY KEY (`id`)
+)
+    ENGINE = InnoDB;
+
+
+CREATE TABLE IF NOT EXISTS `preparer`
+(
+    `id`          INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `preparerId`  VARCHAR(9),
+    `name`        VARCHAR(60),
+    `fingerprint` VARCHAR(32) GENERATED ALWAYS AS (md5(concat_ws('|', preparerId, name))) STORED UNIQUE KEY NOT NULL,
     PRIMARY KEY (`id`)
 )
     ENGINE = InnoDB;
@@ -366,23 +387,8 @@ CREATE TABLE IF NOT EXISTS `tester`
     `staffId`       VARCHAR(9),
     `name`          VARCHAR(60),
     `email_address` VARCHAR(254),
-    `fingerprint`   VARCHAR(32)  NOT NULL,
-    PRIMARY KEY (`id`),
-
-    UNIQUE INDEX `idx_fingerprint_uq` (`fingerprint` ASC)
-)
-    ENGINE = InnoDB;
-
-
-CREATE TABLE IF NOT EXISTS `preparer`
-(
-    `id`          INT UNSIGNED NOT NULL AUTO_INCREMENT,
-    `preparerId`  VARCHAR(9),
-    `name`        VARCHAR(60),
-    `fingerprint` VARCHAR(32)  NOT NULL,
-    PRIMARY KEY (`id`),
-
-    UNIQUE INDEX `idx_fingerprint_uq` (`fingerprint` ASC)
+    `fingerprint` VARCHAR(32) GENERATED ALWAYS AS (md5(concat_ws('|', staffId, name, email_address))) STORED UNIQUE KEY NOT NULL,
+    PRIMARY KEY (`id`)
 )
     ENGINE = InnoDB;
 
@@ -392,10 +398,8 @@ CREATE TABLE IF NOT EXISTS `test_type`
     `id`                     INT UNSIGNED NOT NULL AUTO_INCREMENT,
     `testTypeClassification` VARCHAR(23),
     `testTypeName`           VARCHAR(100),
-    `fingerprint`            VARCHAR(32)  NOT NULL,
-    PRIMARY KEY (`id`),
-
-    UNIQUE INDEX `idx_fingerprint_uq` (`fingerprint` ASC)
+    `fingerprint` VARCHAR(32) GENERATED ALWAYS AS (md5(concat_ws('|', testTypeClassification, testTypeName))) STORED UNIQUE KEY NOT NULL,
+    PRIMARY KEY (`id`)
 )
     ENGINE = InnoDB;
 
@@ -539,6 +543,10 @@ CREATE TABLE IF NOT EXISTS `axles`
     `brakeActuator`       INT UNSIGNED,
     `leverLength`         INT UNSIGNED,
     `springBrakeParking`  INT UNSIGNED,
+    `fingerprint` VARCHAR(32) GENERATED ALWAYS AS (md5(
+            concat_ws('|', technical_record_id, tyre_id, axleNumber, parkingBrakeMrk, kerbWeight, ladenWeight, gbWeight,
+                      eecWeight, designWeight, brakeActuator, leverLength,
+                      springBrakeParking))) STORED UNIQUE KEY NOT NULL,
     PRIMARY KEY (`id`),
     INDEX `idx_technical_record_id` (`technical_record_id` ASC),
 
@@ -565,10 +573,10 @@ CREATE TABLE IF NOT EXISTS `tyre`
     `dataTrAxles`         VARCHAR(45),
     `speedCategorySymbol` VARCHAR(2),
     `tyreCode`            INT UNSIGNED,
-    `fingerprint`         VARCHAR(32)  NOT NULL,
-    PRIMARY KEY (`id`),
-
-    UNIQUE INDEX `idx_fingerprint_uq` (`fingerprint` ASC)
+    `fingerprint` VARCHAR(32) GENERATED ALWAYS AS (md5(
+            concat_ws('|', tyreSize, plyRating, fitmentCode, dataTrAxles, speedCategorySymbol,
+                      tyreCode))) STORED UNIQUE KEY NOT NULL,
+    PRIMARY KEY (`id`)
 )
     ENGINE = InnoDB;
 
@@ -586,10 +594,11 @@ CREATE TABLE IF NOT EXISTS `defects`
     `deficiencyCategory` VARCHAR(9),
     `deficiencyText`     VARCHAR(1950),
     `stdForProhibition`  TINYINT(1),
-    `fingerprint`        VARCHAR(32)  NOT NULL,
-    PRIMARY KEY (`id`),
-
-    UNIQUE INDEX `idx_fingerprint_uq` (`fingerprint` ASC)
+    `fingerprint` VARCHAR(32) GENERATED ALWAYS AS (md5(
+            concat_ws('|', imNumber, imDescription, itemNumber, itemDescription, deficiencyRef, deficiencyId,
+                      deficiencySubId, deficiencyCategory, deficiencyText,
+                      stdForProhibition))) STORED UNIQUE KEY NOT NULL,
+    PRIMARY KEY (`id`)
 )
     ENGINE = InnoDB;
 
@@ -604,10 +613,10 @@ CREATE TABLE IF NOT EXISTS `location`
     `rowNumber`    TINYINT UNSIGNED,
     `seatNumber`   TINYINT UNSIGNED,
     `axleNumber`   TINYINT UNSIGNED,
-    `fingerprint`  VARCHAR(32)  NOT NULL,
-    PRIMARY KEY (`id`),
-
-    UNIQUE INDEX `idx_fingerprint_uq` (`fingerprint` ASC)
+    `fingerprint` VARCHAR(32) GENERATED ALWAYS AS (md5(
+            concat_ws('|', vertical, horizontal, lateral, longitudinal, rowNumber, seatNumber,
+                      axleNumber))) STORED UNIQUE KEY NOT NULL,
+    PRIMARY KEY (`id`)
 )
     ENGINE = InnoDB;
 
@@ -621,6 +630,9 @@ CREATE TABLE IF NOT EXISTS `test_defect`
     `notes`             VARCHAR(500),
     `prs`               TINYINT(1),
     `prohibitionIssued` TINYINT(1),
+    `fingerprint` VARCHAR(32) GENERATED ALWAYS AS (md5(
+            concat_ws('|', test_record_id, defect_id, location_id, notes, prs,
+                      prohibitionIssued))) STORED UNIQUE KEY NOT NULL,
     PRIMARY KEY (`id`),
     INDEX `idx_test_record_id` (`test_record_id` ASC),
     INDEX `idx_defect_id` (`defect_id` ASC),
@@ -695,11 +707,8 @@ CREATE TABLE IF NOT EXISTS `additional_notes_number`
 (
     `id`          INT UNSIGNED NOT NULL,
     `number`      VARCHAR(3)   NOT NULL,
-    `fingerprint` VARCHAR(32)  NOT NULL,
+    `fingerprint` VARCHAR(32) GENERATED ALWAYS AS (md5(concat_ws('|', number))) STORED UNIQUE KEY NOT NULL,
     PRIMARY KEY (`id`),
-
-    UNIQUE INDEX `idx_fingerprint_uq` (`fingerprint` ASC),
-
     FOREIGN KEY (`id`)
         REFERENCES `adr` (`id`)
         ON DELETE NO ACTION
@@ -712,11 +721,8 @@ CREATE TABLE IF NOT EXISTS `additional_notes_guidance`
 (
     `id`            INT UNSIGNED NOT NULL,
     `guidanceNotes` VARCHAR(25)  NOT NULL,
-    `fingerprint`   VARCHAR(32)  NOT NULL,
+    `fingerprint` VARCHAR(32) GENERATED ALWAYS AS (md5(concat_ws('|', guidanceNotes))) STORED UNIQUE KEY NOT NULL,
     PRIMARY KEY (`id`),
-
-    UNIQUE INDEX `idx_fingerprint_uq` (`fingerprint` ASC),
-
     FOREIGN KEY (`id`)
         REFERENCES `adr` (`id`)
         ON DELETE NO ACTION
@@ -729,7 +735,7 @@ CREATE TABLE IF NOT EXISTS `dangerous_goods`
 (
     `id`          INT UNSIGNED NOT NULL AUTO_INCREMENT,
     `name`        VARCHAR(32),
-    `fingerprint` VARCHAR(32)  NOT NULL,
+    `fingerprint` VARCHAR(32) GENERATED ALWAYS AS (md5(concat_ws('|', name))) STORED UNIQUE KEY NOT NULL,
     PRIMARY KEY (`id`)
 )
     ENGINE = InnoDB;
@@ -761,10 +767,8 @@ CREATE TABLE IF NOT EXISTS `productListUnNo`
 (
     `id`          INT UNSIGNED NOT NULL AUTO_INCREMENT,
     `name`        VARCHAR(45),
-    `fingerprint` VARCHAR(32)  NOT NULL,
-    PRIMARY KEY (`id`),
-
-    UNIQUE INDEX `idx_fingerprint_uq` (`fingerprint` ASC)
+    `fingerprint` VARCHAR(32) GENERATED ALWAYS AS (md5(concat_ws('|', name))) STORED UNIQUE KEY NOT NULL,
+    PRIMARY KEY (`id`)
 )
     ENGINE = InnoDB;
 
