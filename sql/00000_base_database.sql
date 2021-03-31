@@ -581,7 +581,7 @@ CREATE TABLE IF NOT EXISTS `tyre`
     ENGINE = InnoDB;
 
 
-CREATE TABLE IF NOT EXISTS `defects`
+CREATE TABLE IF NOT EXISTS `defect`
 (
     `id`                 INT UNSIGNED NOT NULL AUTO_INCREMENT,
     `imNumber`           INT UNSIGNED,
@@ -644,7 +644,7 @@ CREATE TABLE IF NOT EXISTS `test_defect`
         ON UPDATE NO ACTION,
 
     FOREIGN KEY (`defect_id`)
-        REFERENCES `defects` (`id`)
+        REFERENCES defect (`id`)
         ON DELETE NO ACTION
         ON UPDATE NO ACTION,
 
