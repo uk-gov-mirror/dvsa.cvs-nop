@@ -407,7 +407,6 @@ CREATE TABLE IF NOT EXISTS `test_type`
 CREATE TABLE IF NOT EXISTS test_result
 (
     `id`                                INT UNSIGNED NOT NULL AUTO_INCREMENT,
-    `technical_record_id`               INT UNSIGNED NOT NULL,
     `vehicle_id`                        INT UNSIGNED NOT NULL,
     `fuel_emission_id`                  INT UNSIGNED NOT NULL,
     `test_station_id`                   INT UNSIGNED NOT NULL,
@@ -449,18 +448,12 @@ CREATE TABLE IF NOT EXISTS test_result
     `lastUpdatedBy_Id`                  INT UNSIGNED NOT NULL,
 
     PRIMARY KEY (`id`),
-    INDEX `idx_technical_record_id` (`technical_record_id` ASC),
     INDEX `idx_vehicle_id` (`vehicle_id` ASC),
     INDEX `idx_fuel_emission_id` (`fuel_emission_id` ASC),
     INDEX `idx_test_station_id` (`test_station_id` ASC),
     INDEX `idx_tester_id` (`tester_id` ASC),
     INDEX `idx_vehicle_class_id` (`vehicle_class_id` ASC),
     INDEX `idx_preparer_id` (`preparer_id` ASC),
-
-    FOREIGN KEY (`technical_record_id`)
-        REFERENCES `technical_record` (`id`)
-        ON DELETE NO ACTION
-        ON UPDATE NO ACTION,
 
     FOREIGN KEY (`vehicle_id`)
         REFERENCES `vehicle` (`id`)
