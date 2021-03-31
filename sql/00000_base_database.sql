@@ -404,7 +404,7 @@ CREATE TABLE IF NOT EXISTS `test_type`
     ENGINE = InnoDB;
 
 
-CREATE TABLE IF NOT EXISTS `test_record`
+CREATE TABLE IF NOT EXISTS test_result
 (
     `id`                                INT UNSIGNED NOT NULL AUTO_INCREMENT,
     `technical_record_id`               INT UNSIGNED NOT NULL,
@@ -513,15 +513,15 @@ CREATE TABLE IF NOT EXISTS `test_record`
 CREATE TABLE IF NOT EXISTS `custom_defect`
 (
     `id`              INT UNSIGNED NOT NULL AUTO_INCREMENT,
-    `test_record_id`  INT UNSIGNED NOT NULL,
+    `test_result_id`  INT UNSIGNED NOT NULL,
     `referenceNumber` VARCHAR(10),
     `defectName`      VARCHAR(200),
     `defectNotes`     VARCHAR(200),
     PRIMARY KEY (`id`),
-    INDEX `idx_technical_record_id` (`test_record_id` ASC),
+    INDEX `idx_technical_record_id` (`test_result_id` ASC),
 
-    FOREIGN KEY (`test_record_id`)
-        REFERENCES `test_record` (`id`)
+    FOREIGN KEY (`test_result_id`)
+        REFERENCES test_result (`id`)
         ON DELETE NO ACTION
         ON UPDATE NO ACTION
 )
@@ -624,22 +624,22 @@ CREATE TABLE IF NOT EXISTS `location`
 CREATE TABLE IF NOT EXISTS `test_defect`
 (
     `id`                INT UNSIGNED NOT NULL AUTO_INCREMENT,
-    `test_record_id`    INT UNSIGNED NOT NULL,
+    `test_result_id`    INT UNSIGNED NOT NULL,
     `defect_id`         INT UNSIGNED NOT NULL,
     `location_id`       INT UNSIGNED NOT NULL,
     `notes`             VARCHAR(500),
     `prs`               TINYINT(1),
     `prohibitionIssued` TINYINT(1),
     `fingerprint` VARCHAR(32) GENERATED ALWAYS AS (md5(
-            concat_ws('|', test_record_id, defect_id, location_id, notes, prs,
+            concat_ws('|', test_result_id, defect_id, location_id, notes, prs,
                       prohibitionIssued))) STORED UNIQUE KEY NOT NULL,
     PRIMARY KEY (`id`),
-    INDEX `idx_test_record_id` (`test_record_id` ASC),
+    INDEX `idx_test_result_id` (`test_result_id` ASC),
     INDEX `idx_defect_id` (`defect_id` ASC),
     INDEX `idx_location_id` (`location_id` ASC),
 
-    FOREIGN KEY (`test_record_id`)
-        REFERENCES `test_record` (`id`)
+    FOREIGN KEY (`test_result_id`)
+        REFERENCES test_result (`id`)
         ON DELETE NO ACTION
         ON UPDATE NO ACTION,
 
