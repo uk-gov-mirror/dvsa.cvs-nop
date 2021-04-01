@@ -448,6 +448,9 @@ CREATE TABLE IF NOT EXISTS test_result
     `lastUpdatedBy_Id`                  INT UNSIGNED NOT NULL,
 
     PRIMARY KEY (`id`),
+
+    UNIQUE INDEX `idx_comp_test_result_uq` (`vehicle_id` ASC,`test_type_id` ASC, `createdAt` ASC),
+
     INDEX `idx_vehicle_id` (`vehicle_id` ASC),
     INDEX `idx_fuel_emission_id` (`fuel_emission_id` ASC),
     INDEX `idx_test_station_id` (`test_station_id` ASC),
