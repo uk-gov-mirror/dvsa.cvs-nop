@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS `vehicle`
     `trailer_id`    VARCHAR(8),
     `createdAt`     DATETIME,
     PRIMARY KEY (`id`),
-    UNIQUE INDEX `idx_system_number_uq` (`system_number` ASC)
+    UNIQUE INDEX `idx_system_number_vin_uq` (`system_number` ASC, `vin` ASC)
 )
     ENGINE = InnoDB
     DEFAULT CHARACTER SET = latin1;
@@ -198,7 +198,7 @@ CREATE TABLE IF NOT EXISTS `technical_record`
     `seatbeltInstallationApprovalDate` DATE,
     PRIMARY KEY (`id`),
 
-    UNIQUE INDEX `idx_technical_record_uq` (`vehicle_id` ASC, `createdAt` ASC),
+    UNIQUE INDEX `idx_vehicle_id_createdAt_uq` (`vehicle_id` ASC, `createdAt` ASC),
 
     FOREIGN KEY (`vehicle_id`)
         REFERENCES `vehicle` (`id`)
@@ -266,11 +266,6 @@ CREATE TABLE IF NOT EXISTS `psv_brakes`
     `serviceBrakeForceB`   MEDIUMINT UNSIGNED,
     `secondaryBrakeForceB` MEDIUMINT UNSIGNED,
     `parkingBrakeForceB`   MEDIUMINT UNSIGNED,
-    `fingerprint` VARCHAR(32) GENERATED ALWAYS AS (md5(
-            concat_ws('|', technical_record_id, brakeCodeOriginal, brakeCode, dataTrBrakeOne, dataTrBrakeTwo,
-                      dataTrBrakeThree, retarderBrakeOne, retarderBrakeTwo, serviceBrakeForceA, secondaryBrakeForceA,
-                      parkingBrakeForceA, serviceBrakeForceB, secondaryBrakeForceB,
-                      parkingBrakeForceB))) STORED UNIQUE KEY NOT NULL,
     PRIMARY KEY (`id`),
     FOREIGN KEY (`technical_record_id`)
         REFERENCES `technical_record` (`id`)
@@ -289,14 +284,13 @@ CREATE TABLE IF NOT EXISTS `axle_spacing`
     `technical_record_id` INT UNSIGNED NOT NULL,
     `axles`               VARCHAR(5),
     `value`               MEDIUMINT UNSIGNED,
-    `fingerprint` VARCHAR(32) GENERATED ALWAYS AS (md5(concat_ws('|', technical_record_id, axles, value))) STORED UNIQUE KEY NOT NULL,
     PRIMARY KEY (`id`),
     FOREIGN KEY (`technical_record_id`)
         REFERENCES `technical_record` (`id`)
         ON DELETE NO ACTION
         ON UPDATE NO ACTION,
 
-    INDEX `idx_technical_record_id` (`technical_record_id` ASC)
+    UNIQUE INDEX `idx_technical_record_axles_id_uq` (`technical_record_id` ASC, `axles` ASC)
 )
     ENGINE = InnoDB;
 
@@ -308,16 +302,13 @@ CREATE TABLE IF NOT EXISTS `microfilm`
     `microfilmDocumentType` VARCHAR(31),
     `microfilmRollNumber`   VARCHAR(5),
     `microfilmSerialNumber` VARCHAR(4),
-    `fingerprint` VARCHAR(32) GENERATED ALWAYS AS (md5(
-            concat_ws('|', technical_record_id, microfilmDocumentType, microfilmRollNumber,
-                      microfilmSerialNumber))) STORED UNIQUE KEY NOT NULL,
     PRIMARY KEY (`id`),
     FOREIGN KEY (`technical_record_id`)
         REFERENCES `technical_record` (`id`)
         ON DELETE NO ACTION
         ON UPDATE NO ACTION,
 
-    INDEX `idx_technical_record_id` (`technical_record_id` ASC)
+    UNIQUE INDEX `idx_technical_record_id_uq` (`technical_record_id` ASC)
 )
     ENGINE = InnoDB;
 
@@ -330,16 +321,15 @@ CREATE TABLE IF NOT EXISTS `plate`
     `plateIssueDate`      DATE,
     `plateReasonForIssue` VARCHAR(16),
     `plateIssuer`         VARCHAR(150),
-    `fingerprint` VARCHAR(32) GENERATED ALWAYS AS (md5(
-            concat_ws('|', technical_record_id, plateSerialNumber, plateIssueDate, plateReasonForIssue,
-                      plateIssuer))) STORED UNIQUE KEY NOT NULL,
     PRIMARY KEY (`id`),
     FOREIGN KEY (`technical_record_id`)
         REFERENCES `technical_record` (`id`)
         ON DELETE NO ACTION
         ON UPDATE NO ACTION,
 
-    INDEX `idx_technical_record_id` (`technical_record_id` ASC)
+    UNIQUE INDEX `idx_technical_record_id_plateSerialNumber_plateIssueDate_uq` (`technical_record_id` ASC,
+                                                                                `plateSerialNumber` ASC,
+                                                                                `plateIssueDate` ASC)
 )
     ENGINE = InnoDB;
 
@@ -539,12 +529,8 @@ CREATE TABLE IF NOT EXISTS `axles`
     `brakeActuator`       INT UNSIGNED,
     `leverLength`         INT UNSIGNED,
     `springBrakeParking`  INT UNSIGNED,
-    `fingerprint` VARCHAR(32) GENERATED ALWAYS AS (md5(
-            concat_ws('|', technical_record_id, tyre_id, axleNumber, parkingBrakeMrk, kerbWeight, ladenWeight, gbWeight,
-                      eecWeight, designWeight, brakeActuator, leverLength,
-                      springBrakeParking))) STORED UNIQUE KEY NOT NULL,
     PRIMARY KEY (`id`),
-    INDEX `idx_technical_record_id` (`technical_record_id` ASC),
+    INDEX `idx_technical_record_tyre_id_axleNumber_id` (`technical_record_id` ASC, `tyre_id` ASC, `axleNumber` ASC),
 
     FOREIGN KEY (`technical_record_id`)
         REFERENCES `technical_record` (`id`)
