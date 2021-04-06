@@ -36,9 +36,11 @@ CREATE TABLE IF NOT EXISTS `make_model`
     `bodyTypeDescription`  VARCHAR(17),
     `fuelPropulsionSystem` VARCHAR(12),
     `dtpCode`              VARCHAR(6),
-    `fingerprint` VARCHAR(32) GENERATED ALWAYS AS (md5(
-            concat_ws('|', make, model, chassisMake, chassisModel, bodyMake, bodyModel, modelLiteral, bodyTypeCode,
-                      bodyTypeDescription, fuelPropulsionSystem, dtpCode))) STORED UNIQUE KEY NOT NULL,
+    `fingerprint`          VARCHAR(32) GENERATED ALWAYS AS (md5(
+            concat_ws('|', IFNULL(`make`, ''), IFNULL(`model`, ''), IFNULL(`chassisMake`, ''),
+                      IFNULL(`chassisModel`, ''), IFNULL(`bodyMake`, ''), IFNULL(`bodyModel`, ''),
+                      IFNULL(`modelLiteral`, ''), IFNULL(`bodyTypeCode`, ''), IFNULL(`bodyTypeDescription`, ''),
+                      IFNULL(`fuelPropulsionSystem`, ''), IFNULL(`dtpCode`, '')))) STORED UNIQUE KEY NOT NULL,
     PRIMARY KEY (`id`)
 )
     ENGINE = InnoDB;
@@ -53,9 +55,10 @@ CREATE TABLE IF NOT EXISTS `vehicle_class`
     `vehicleSize`          VARCHAR(5),
     `vehicleConfiguration` VARCHAR(20),
     `euVehicleCategory`    VARCHAR(5),
-    `fingerprint` VARCHAR(32) GENERATED ALWAYS AS (md5(
-            concat_ws('|', code, description, vehicleType, vehicleSize, vehicleConfiguration,
-                      euVehicleCategory))) STORED UNIQUE KEY NOT NULL,
+    `fingerprint`          VARCHAR(32) GENERATED ALWAYS AS (md5(
+            concat_ws('|', IFNULL(`code`, ''), IFNULL(`description`, ''), IFNULL(`vehicleType`, ''),
+                      IFNULL(`vehicleSize`, ''), IFNULL(`vehicleConfiguration`, ''),
+                      IFNULL(`euVehicleCategory`, '')))) STORED UNIQUE KEY NOT NULL,
     PRIMARY KEY (`id`)
 )
     ENGINE = InnoDB;
@@ -66,7 +69,8 @@ CREATE TABLE IF NOT EXISTS `vehicle_subclass`
     `id`               INT          NOT NULL AUTO_INCREMENT,
     `vehicle_class_id` INT UNSIGNED NOT NULL,
     `subclass`         VARCHAR(1),
-    `fingerprint`      VARCHAR(32) GENERATED ALWAYS AS (md5(concat_ws('|', vehicle_class_id, subclass))) STORED UNIQUE KEY NOT NULL,
+    `fingerprint` VARCHAR(32) GENERATED ALWAYS AS (md5(
+            concat_ws('|', IFNULL(`vehicle_class_id`, ''), IFNULL(`subclass`, '')))) STORED UNIQUE KEY NOT NULL,
     PRIMARY KEY (`id`),
     FOREIGN KEY (`vehicle_class_id`)
         REFERENCES `vehicle_class` (`id`)
@@ -81,7 +85,8 @@ CREATE TABLE IF NOT EXISTS `identity`
     `id`          INT UNSIGNED NOT NULL AUTO_INCREMENT,
     `identityId`  VARCHAR(36),
     `name`        VARCHAR(320),
-    `fingerprint` VARCHAR(32) GENERATED ALWAYS AS (md5(concat_ws('|', identityId, name))) STORED UNIQUE KEY NOT NULL,
+    `fingerprint` VARCHAR(32) GENERATED ALWAYS AS (md5(
+            concat_ws('|', IFNULL(`identityId`, ''), IFNULL(`name`, '')))) STORED UNIQUE KEY NOT NULL,
     PRIMARY KEY (`id`),
 
     INDEX `idx_name` (`name` ASC)
@@ -102,8 +107,9 @@ CREATE TABLE IF NOT EXISTS `contact_details`
     `telephoneNumber` VARCHAR(25),
     `faxNumber`       VARCHAR(25),
     `fingerprint` VARCHAR(32) GENERATED ALWAYS AS (md5(
-            concat_ws('|', name, address1, address2, postTown, address3, postCode, emailAddress, telephoneNumber,
-                      faxNumber))) STORED UNIQUE KEY NOT NULL,
+            concat_ws('|', IFNULL(`name`, ''), IFNULL(`address1`, ''), IFNULL(`address2`, ''), IFNULL(`postTown`, ''),
+                      IFNULL(`address3`, ''), IFNULL(`postCode`, ''), IFNULL(`emailAddress`, ''),
+                      IFNULL(`telephoneNumber`, ''), IFNULL(`faxNumber`, '')))) STORED UNIQUE KEY NOT NULL,
     PRIMARY KEY (`id`)
 )
     ENGINE = InnoDB;
@@ -342,7 +348,8 @@ CREATE TABLE IF NOT EXISTS `fuel_emission`
     `emissionStandard` VARCHAR(21),
     `fuelType`         VARCHAR(13),
     `fingerprint` VARCHAR(32) GENERATED ALWAYS AS (md5(
-            concat_ws('|', modTypeCode, description, emissionStandard, fuelType))) STORED UNIQUE KEY NOT NULL,
+            concat_ws('|', IFNULL(`modTypeCode`, ''), IFNULL(`description`, ''), IFNULL(`emissionStandard`, ''),
+                      IFNULL(`fuelType`, '')))) STORED UNIQUE KEY NOT NULL,
     PRIMARY KEY (`id`)
 )
     ENGINE = InnoDB;
@@ -354,7 +361,8 @@ CREATE TABLE IF NOT EXISTS `test_station`
     `pNumber`     VARCHAR(20),
     `name`        VARCHAR(1000),
     `type`        VARCHAR(4),
-    `fingerprint` VARCHAR(32) GENERATED ALWAYS AS (md5(concat_ws('|', pNumber, name, type))) STORED UNIQUE KEY NOT NULL,
+    `fingerprint` VARCHAR(32) GENERATED ALWAYS AS (md5(
+            concat_ws('|', IFNULL(`pNumber`, ''), IFNULL(`name`, ''), IFNULL(`type`, '')))) STORED UNIQUE KEY NOT NULL,
     PRIMARY KEY (`id`)
 )
     ENGINE = InnoDB;
@@ -365,7 +373,8 @@ CREATE TABLE IF NOT EXISTS `preparer`
     `id`          INT UNSIGNED NOT NULL AUTO_INCREMENT,
     `preparerId`  VARCHAR(9),
     `name`        VARCHAR(60),
-    `fingerprint` VARCHAR(32) GENERATED ALWAYS AS (md5(concat_ws('|', preparerId, name))) STORED UNIQUE KEY NOT NULL,
+    `fingerprint` VARCHAR(32) GENERATED ALWAYS AS (md5(
+            concat_ws('|', IFNULL(`preparerId`, ''), IFNULL(`name`, '')))) STORED UNIQUE KEY NOT NULL,
     PRIMARY KEY (`id`)
 )
     ENGINE = InnoDB;
@@ -377,7 +386,8 @@ CREATE TABLE IF NOT EXISTS `tester`
     `staffId`       VARCHAR(9),
     `name`          VARCHAR(60),
     `email_address` VARCHAR(254),
-    `fingerprint` VARCHAR(32) GENERATED ALWAYS AS (md5(concat_ws('|', staffId, name, email_address))) STORED UNIQUE KEY NOT NULL,
+    `fingerprint` VARCHAR(32) GENERATED ALWAYS AS (md5(concat_ws('|', IFNULL(`staffId`, ''), IFNULL(`name`, ''),
+                                                                 IFNULL(`email_address`, '')))) STORED UNIQUE KEY NOT NULL,
     PRIMARY KEY (`id`)
 )
     ENGINE = InnoDB;
@@ -388,7 +398,8 @@ CREATE TABLE IF NOT EXISTS `test_type`
     `id`                     INT UNSIGNED NOT NULL AUTO_INCREMENT,
     `testTypeClassification` VARCHAR(23),
     `testTypeName`           VARCHAR(100),
-    `fingerprint` VARCHAR(32) GENERATED ALWAYS AS (md5(concat_ws('|', testTypeClassification, testTypeName))) STORED UNIQUE KEY NOT NULL,
+    `fingerprint` VARCHAR(32) GENERATED ALWAYS AS (md5(concat_ws('|', IFNULL(`testTypeClassification`, ''),
+                                                                 IFNULL(`testTypeName`, '')))) STORED UNIQUE KEY NOT NULL,
     PRIMARY KEY (`id`)
 )
     ENGINE = InnoDB;
@@ -556,8 +567,9 @@ CREATE TABLE IF NOT EXISTS `tyre`
     `speedCategorySymbol` VARCHAR(2),
     `tyreCode`            INT UNSIGNED,
     `fingerprint` VARCHAR(32) GENERATED ALWAYS AS (md5(
-            concat_ws('|', tyreSize, plyRating, fitmentCode, dataTrAxles, speedCategorySymbol,
-                      tyreCode))) STORED UNIQUE KEY NOT NULL,
+            concat_ws('|', IFNULL(`tyreSize`, ''), IFNULL(`plyRating`, ''), IFNULL(`fitmentCode`, ''),
+                      IFNULL(`dataTrAxles`, ''), IFNULL(`speedCategorySymbol`, ''),
+                      IFNULL(`tyreCode`, '')))) STORED UNIQUE KEY NOT NULL,
     PRIMARY KEY (`id`)
 )
     ENGINE = InnoDB;
@@ -577,9 +589,10 @@ CREATE TABLE IF NOT EXISTS `defect`
     `deficiencyText`     VARCHAR(1950),
     `stdForProhibition`  TINYINT(1),
     `fingerprint` VARCHAR(32) GENERATED ALWAYS AS (md5(
-            concat_ws('|', imNumber, imDescription, itemNumber, itemDescription, deficiencyRef, deficiencyId,
-                      deficiencySubId, deficiencyCategory, deficiencyText,
-                      stdForProhibition))) STORED UNIQUE KEY NOT NULL,
+            concat_ws('|', IFNULL(`imNumber`, ''), IFNULL(`imDescription`, ''), IFNULL(`itemNumber`, ''),
+                      IFNULL(`itemDescription`, ''), IFNULL(`deficiencyRef`, ''), IFNULL(`deficiencyId`, ''),
+                      IFNULL(`deficiencySubId`, ''), IFNULL(`deficiencyCategory`, ''), IFNULL(`deficiencyText`, ''),
+                      IFNULL(`stdForProhibition`, '')))) STORED UNIQUE KEY NOT NULL,
     PRIMARY KEY (`id`)
 )
     ENGINE = InnoDB;
@@ -596,8 +609,9 @@ CREATE TABLE IF NOT EXISTS `location`
     `seatNumber`   TINYINT UNSIGNED,
     `axleNumber`   TINYINT UNSIGNED,
     `fingerprint` VARCHAR(32) GENERATED ALWAYS AS (md5(
-            concat_ws('|', vertical, horizontal, lateral, longitudinal, rowNumber, seatNumber,
-                      axleNumber))) STORED UNIQUE KEY NOT NULL,
+            concat_ws('|', IFNULL(`vertical`, ''), IFNULL(`horizontal`, ''), IFNULL(`lateral`, ''),
+                      IFNULL(`longitudinal`, ''), IFNULL(`rowNumber`, ''), IFNULL(`seatNumber`, ''),
+                      IFNULL(`axleNumber`, '')))) STORED UNIQUE KEY NOT NULL,
     PRIMARY KEY (`id`)
 )
     ENGINE = InnoDB;
@@ -612,9 +626,6 @@ CREATE TABLE IF NOT EXISTS `test_defect`
     `notes`             VARCHAR(500),
     `prs`               TINYINT(1),
     `prohibitionIssued` TINYINT(1),
-    `fingerprint` VARCHAR(32) GENERATED ALWAYS AS (md5(
-            concat_ws('|', test_result_id, defect_id, location_id, notes, prs,
-                      prohibitionIssued))) STORED UNIQUE KEY NOT NULL,
     PRIMARY KEY (`id`),
     INDEX `idx_test_result_id` (`test_result_id` ASC),
     INDEX `idx_defect_id` (`defect_id` ASC),
