@@ -9,7 +9,7 @@ SET @OLD_SQL_MODE = @@SQL_MODE, SQL_MODE =
 
 CREATE TABLE IF NOT EXISTS `vehicle`
 (
-    `id`            INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `id`            BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
     `system_number` VARCHAR(30)  NOT NULL,
     `vin`           VARCHAR(21),
     `vrm_trm`       VARCHAR(9),
@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS `vehicle`
 
 CREATE TABLE IF NOT EXISTS `make_model`
 (
-    `id`                   INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `id`                   BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
     `make`                 VARCHAR(30),
     `model`                VARCHAR(30),
     `chassisMake`          VARCHAR(20),
@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS `make_model`
 
 CREATE TABLE IF NOT EXISTS `vehicle_class`
 (
-    `id`                   INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `id`                   BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
     `code`                 CHAR(1),
     `description`          VARCHAR(46),
     `vehicleType`          VARCHAR(10),
@@ -66,8 +66,8 @@ CREATE TABLE IF NOT EXISTS `vehicle_class`
 
 CREATE TABLE IF NOT EXISTS `vehicle_subclass`
 (
-    `id`               INT          NOT NULL AUTO_INCREMENT,
-    `vehicle_class_id` INT UNSIGNED NOT NULL,
+    `id`               BIGINT          NOT NULL AUTO_INCREMENT,
+    `vehicle_class_id` BIGINT UNSIGNED NOT NULL,
     `subclass`         VARCHAR(1),
     `fingerprint` VARCHAR(32) GENERATED ALWAYS AS (md5(
             concat_ws('|', IFNULL(`vehicle_class_id`, ''), IFNULL(`subclass`, '')))) STORED UNIQUE KEY NOT NULL,
@@ -82,7 +82,7 @@ CREATE TABLE IF NOT EXISTS `vehicle_subclass`
 
 CREATE TABLE IF NOT EXISTS `identity`
 (
-    `id`          INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `id`          BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
     `identityId`  VARCHAR(36),
     `name`        VARCHAR(320),
     `fingerprint` VARCHAR(32) GENERATED ALWAYS AS (md5(
@@ -96,7 +96,7 @@ CREATE TABLE IF NOT EXISTS `identity`
 
 CREATE TABLE IF NOT EXISTS `contact_details`
 (
-    `id`              INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `id`              BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
     `name`            VARCHAR(150),
     `address1`        VARCHAR(60),
     `address2`        VARCHAR(60),
@@ -117,26 +117,26 @@ CREATE TABLE IF NOT EXISTS `contact_details`
 
 CREATE TABLE IF NOT EXISTS `technical_record`
 (
-    `id`                               INT UNSIGNED NOT NULL AUTO_INCREMENT,
-    `vehicle_id`                       INT UNSIGNED NOT NULL,
+    `id`                               BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `vehicle_id`                       BIGINT UNSIGNED NOT NULL,
     `recordCompleteness`               VARCHAR(8),
     `createdAt`                        DATETIME,
     `lastUpdatedAt`                    DATETIME,
-    `make_model_id`                    INT UNSIGNED NOT NULL,
+    `make_model_id`                    BIGINT UNSIGNED NOT NULL,
     `functionCode`                     CHAR(1),
     `offRoad`                          TINYINT(1),
     `numberOfWheelsDriven`             INT,
     `emissionsLimit`                   VARCHAR(45),
     `departmentalVehicleMarker`        TINYINT(1),
     `alterationMarker`                 TINYINT(1),
-    `vehicle_class_id`                 INT UNSIGNED NOT NULL,
+    `vehicle_class_id`                 BIGINT UNSIGNED NOT NULL,
     `variantVersionNumber`             VARCHAR(35),
     `grossEecWeight`                   MEDIUMINT UNSIGNED,
     `trainEecWeight`                   MEDIUMINT UNSIGNED,
     `maxTrainEecWeight`                MEDIUMINT UNSIGNED,
-    `applicant_detail_id`              INT UNSIGNED NOT NULL,
-    `purchaser_detail_id`              INT UNSIGNED NOT NULL,
-    `manufacturer_detail_id`           INT UNSIGNED NOT NULL,
+    `applicant_detail_id`              BIGINT UNSIGNED NOT NULL,
+    `purchaser_detail_id`              BIGINT UNSIGNED NOT NULL,
+    `manufacturer_detail_id`           BIGINT UNSIGNED NOT NULL,
     `manufactureYear`                  YEAR,
     `regnDate`                         DATE,
     `firstUseDate`                     DATE,
@@ -197,8 +197,8 @@ CREATE TABLE IF NOT EXISTS `technical_record`
     `brakes_dtpNumber`                 VARCHAR(6),
     `brakes_loadSensingValve`          TINYINT(1),
     `brakes_antilockBrakingSystem`     TINYINT(1),
-    `createdBy_Id`                     INT UNSIGNED NOT NULL,
-    `lastUpdatedBy_Id`                 INT UNSIGNED NOT NULL,
+    `createdBy_Id`                     BIGINT UNSIGNED NOT NULL,
+    `lastUpdatedBy_Id`                 BIGINT UNSIGNED NOT NULL,
     `updateType`                       VARCHAR(16),
     `numberOfSeatbelts`                VARCHAR(99),
     `seatbeltInstallationApprovalDate` DATE,
@@ -257,8 +257,8 @@ CREATE TABLE IF NOT EXISTS `technical_record`
 
 CREATE TABLE IF NOT EXISTS `psv_brakes`
 (
-    `id`                   INT UNSIGNED NOT NULL AUTO_INCREMENT,
-    `technical_record_id`  INT UNSIGNED NOT NULL,
+    `id`                   BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `technical_record_id`  BIGINT UNSIGNED NOT NULL,
     `brakeCodeOriginal`    VARCHAR(3),
     `brakeCode`            VARCHAR(6),
     `dataTrBrakeOne`       VARCHAR(60),
@@ -286,8 +286,8 @@ CREATE TABLE IF NOT EXISTS `psv_brakes`
 
 CREATE TABLE IF NOT EXISTS `axle_spacing`
 (
-    `id`                  INT UNSIGNED NOT NULL AUTO_INCREMENT,
-    `technical_record_id` INT UNSIGNED NOT NULL,
+    `id`                  BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `technical_record_id` BIGINT UNSIGNED NOT NULL,
     `axles`               VARCHAR(5),
     `value`               MEDIUMINT UNSIGNED,
     PRIMARY KEY (`id`),
@@ -303,8 +303,8 @@ CREATE TABLE IF NOT EXISTS `axle_spacing`
 
 CREATE TABLE IF NOT EXISTS `microfilm`
 (
-    `id`                    INT UNSIGNED NOT NULL AUTO_INCREMENT,
-    `technical_record_id`   INT UNSIGNED NOT NULL,
+    `id`                    BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `technical_record_id`   BIGINT UNSIGNED NOT NULL,
     `microfilmDocumentType` VARCHAR(31),
     `microfilmRollNumber`   VARCHAR(5),
     `microfilmSerialNumber` VARCHAR(4),
@@ -321,8 +321,8 @@ CREATE TABLE IF NOT EXISTS `microfilm`
 
 CREATE TABLE IF NOT EXISTS `plate`
 (
-    `id`                  INT UNSIGNED NOT NULL AUTO_INCREMENT,
-    `technical_record_id` INT UNSIGNED NOT NULL,
+    `id`                  BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `technical_record_id` BIGINT UNSIGNED NOT NULL,
     `plateSerialNumber`   VARCHAR(12),
     `plateIssueDate`      DATE,
     `plateReasonForIssue` VARCHAR(16),
@@ -342,9 +342,9 @@ CREATE TABLE IF NOT EXISTS `plate`
 
 CREATE TABLE IF NOT EXISTS `axles`
 (
-    `id`                  INT UNSIGNED NOT NULL AUTO_INCREMENT,
-    `technical_record_id` INT UNSIGNED NOT NULL,
-    `tyre_id`             INT UNSIGNED NOT NULL,
+    `id`                  BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `technical_record_id` BIGINT UNSIGNED NOT NULL,
+    `tyre_id`             BIGINT UNSIGNED NOT NULL,
     `axleNumber`          INT          NOT NULL,
     `parkingBrakeMrk`     TINYINT(1),
     `kerbWeight`          INT UNSIGNED,
@@ -374,7 +374,7 @@ CREATE TABLE IF NOT EXISTS `axles`
 
 CREATE TABLE IF NOT EXISTS `tyre`
 (
-    `id`                  INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `id`                  BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
     `tyreSize`            VARCHAR(12),
     `plyRating`           VARCHAR(2),
     `fitmentCode`         VARCHAR(6),
@@ -392,7 +392,7 @@ CREATE TABLE IF NOT EXISTS `tyre`
 
 CREATE TABLE IF NOT EXISTS `fuel_emission`
 (
-    `id`               INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `id`               BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
     `modTypeCode`      CHAR(1),
     `description`      VARCHAR(32),
     `emissionStandard` VARCHAR(21),
@@ -407,7 +407,7 @@ CREATE TABLE IF NOT EXISTS `fuel_emission`
 
 CREATE TABLE IF NOT EXISTS `test_station`
 (
-    `id`          INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `id`          BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
     `pNumber`     VARCHAR(20),
     `name`        VARCHAR(1000),
     `type`        VARCHAR(4),
@@ -420,7 +420,7 @@ CREATE TABLE IF NOT EXISTS `test_station`
 
 CREATE TABLE IF NOT EXISTS `preparer`
 (
-    `id`          INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `id`          BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
     `preparerId`  VARCHAR(9),
     `name`        VARCHAR(60),
     `fingerprint` VARCHAR(32) GENERATED ALWAYS AS (md5(
@@ -432,7 +432,7 @@ CREATE TABLE IF NOT EXISTS `preparer`
 
 CREATE TABLE IF NOT EXISTS `tester`
 (
-    `id`            INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `id`            BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
     `staffId`       VARCHAR(9),
     `name`          VARCHAR(60),
     `email_address` VARCHAR(254),
@@ -445,7 +445,7 @@ CREATE TABLE IF NOT EXISTS `tester`
 
 CREATE TABLE IF NOT EXISTS `test_type`
 (
-    `id`                     INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `id`                     BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
     `testTypeClassification` VARCHAR(23),
     `testTypeName`           VARCHAR(100),
     `fingerprint` VARCHAR(32) GENERATED ALWAYS AS (md5(concat_ws('|', IFNULL(`testTypeClassification`, ''),
@@ -457,14 +457,14 @@ CREATE TABLE IF NOT EXISTS `test_type`
 
 CREATE TABLE IF NOT EXISTS test_result
 (
-    `id`                                INT UNSIGNED NOT NULL AUTO_INCREMENT,
-    `vehicle_id`                        INT UNSIGNED NOT NULL,
-    `fuel_emission_id`                  INT UNSIGNED NOT NULL,
-    `test_station_id`                   INT UNSIGNED NOT NULL,
-    `tester_id`                         INT UNSIGNED NOT NULL,
-    `preparer_id`                       INT UNSIGNED NOT NULL,
-    `vehicle_class_id`                  INT UNSIGNED NOT NULL,
-    `test_type_id`                      INT UNSIGNED NOT NULL,
+    `id`                                BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `vehicle_id`                        BIGINT UNSIGNED NOT NULL,
+    `fuel_emission_id`                  BIGINT UNSIGNED NOT NULL,
+    `test_station_id`                   BIGINT UNSIGNED NOT NULL,
+    `tester_id`                         BIGINT UNSIGNED NOT NULL,
+    `preparer_id`                       BIGINT UNSIGNED NOT NULL,
+    `vehicle_class_id`                  BIGINT UNSIGNED NOT NULL,
+    `test_type_id`                      BIGINT UNSIGNED NOT NULL,
     `testStatus`                        VARCHAR(9),
     `reasonForCancellation`             VARCHAR(500),
     `numberOfSeats`                     INT,
@@ -495,8 +495,8 @@ CREATE TABLE IF NOT EXISTS test_result
     `particulateTrapSerialNumber`       VARCHAR(100),
     `modificationTypeUsed`              VARCHAR(100),
     `smokeTestKLimitApplied`            VARCHAR(100),
-    `createdBy_Id`                      INT UNSIGNED NOT NULL,
-    `lastUpdatedBy_Id`                  INT UNSIGNED NOT NULL,
+    `createdBy_Id`                      BIGINT UNSIGNED NOT NULL,
+    `lastUpdatedBy_Id`                  BIGINT UNSIGNED NOT NULL,
 
     PRIMARY KEY (`id`),
 
@@ -559,8 +559,8 @@ CREATE TABLE IF NOT EXISTS test_result
 
 CREATE TABLE IF NOT EXISTS `custom_defect`
 (
-    `id`              INT UNSIGNED NOT NULL AUTO_INCREMENT,
-    `test_result_id`  INT UNSIGNED NOT NULL,
+    `id`              BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `test_result_id`  BIGINT UNSIGNED NOT NULL,
     `referenceNumber` VARCHAR(10),
     `defectName`      VARCHAR(200),
     `defectNotes`     VARCHAR(200),
@@ -577,7 +577,7 @@ CREATE TABLE IF NOT EXISTS `custom_defect`
 
 CREATE TABLE IF NOT EXISTS `defect`
 (
-    `id`                 INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `id`                 BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
     `imNumber`           INT UNSIGNED,
     `imDescription`      VARCHAR(200),
     `itemNumber`         INT UNSIGNED,
@@ -600,7 +600,7 @@ CREATE TABLE IF NOT EXISTS `defect`
 
 CREATE TABLE IF NOT EXISTS `location`
 (
-    `id`           INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `id`           BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
     `vertical`     VARCHAR(5),
     `horizontal`   VARCHAR(5),
     `lateral`      VARCHAR(8),
@@ -619,10 +619,10 @@ CREATE TABLE IF NOT EXISTS `location`
 
 CREATE TABLE IF NOT EXISTS `test_defect`
 (
-    `id`                INT UNSIGNED NOT NULL AUTO_INCREMENT,
-    `test_result_id`    INT UNSIGNED NOT NULL,
-    `defect_id`         INT UNSIGNED NOT NULL,
-    `location_id`       INT UNSIGNED NOT NULL,
+    `id`                BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `test_result_id`    BIGINT UNSIGNED NOT NULL,
+    `defect_id`         BIGINT UNSIGNED NOT NULL,
+    `location_id`       BIGINT UNSIGNED NOT NULL,
     `notes`             VARCHAR(500),
     `prs`               TINYINT(1),
     `prohibitionIssued` TINYINT(1),

@@ -9,8 +9,8 @@ SET @OLD_SQL_MODE = @@SQL_MODE, SQL_MODE =
 
 CREATE TABLE IF NOT EXISTS `adr`
 (
-    `id`                        INT UNSIGNED NOT NULL AUTO_INCREMENT,
-    `technical_record_id`       INT UNSIGNED NOT NULL,
+    `id`                        BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `technical_record_id`       BIGINT UNSIGNED NOT NULL,
     `type`                      VARCHAR(45),
     `approvalDate`              DATE,
     `listStatementApplicable`   TINYINT(1),
@@ -56,7 +56,7 @@ CREATE TABLE IF NOT EXISTS `adr`
 
 CREATE TABLE IF NOT EXISTS `additional_notes_number`
 (
-    `id`          INT UNSIGNED NOT NULL,
+    `id`          BIGINT UNSIGNED NOT NULL,
     `number`      VARCHAR(3)   NOT NULL,
     `fingerprint` VARCHAR(32) GENERATED ALWAYS AS (md5(concat_ws('|', number))) STORED UNIQUE KEY NOT NULL,
     PRIMARY KEY (`id`),
@@ -70,7 +70,7 @@ CREATE TABLE IF NOT EXISTS `additional_notes_number`
 
 CREATE TABLE IF NOT EXISTS `additional_notes_guidance`
 (
-    `id`            INT UNSIGNED NOT NULL,
+    `id`            BIGINT UNSIGNED NOT NULL,
     `guidanceNotes` VARCHAR(25)  NOT NULL,
     `fingerprint` VARCHAR(32) GENERATED ALWAYS AS (md5(concat_ws('|', guidanceNotes))) STORED UNIQUE KEY NOT NULL,
     PRIMARY KEY (`id`),
@@ -84,7 +84,7 @@ CREATE TABLE IF NOT EXISTS `additional_notes_guidance`
 
 CREATE TABLE IF NOT EXISTS `dangerous_goods`
 (
-    `id`          INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `id`          BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
     `name`        VARCHAR(32),
     `fingerprint` VARCHAR(32) GENERATED ALWAYS AS (md5(concat_ws('|', name))) STORED UNIQUE KEY NOT NULL,
     PRIMARY KEY (`id`)
@@ -94,9 +94,9 @@ CREATE TABLE IF NOT EXISTS `dangerous_goods`
 
 CREATE TABLE IF NOT EXISTS `permitted_dangerous_goods`
 (
-    `id`                 INT UNSIGNED NOT NULL AUTO_INCREMENT,
-    `adr_id`             INT UNSIGNED NOT NULL,
-    `dangerous_goods_id` INT UNSIGNED NOT NULL,
+    `id`                 BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `adr_id`             BIGINT UNSIGNED NOT NULL,
+    `dangerous_goods_id` BIGINT UNSIGNED NOT NULL,
     PRIMARY KEY (`id`),
     INDEX `idx_adr_id` (`adr_id` ASC),
     INDEX `idx_dangerous_goods_id` (`dangerous_goods_id` ASC),
@@ -116,7 +116,7 @@ CREATE TABLE IF NOT EXISTS `permitted_dangerous_goods`
 
 CREATE TABLE IF NOT EXISTS `productListUnNo`
 (
-    `id`          INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `id`          BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
     `name`        VARCHAR(45),
     `fingerprint` VARCHAR(32) GENERATED ALWAYS AS (md5(concat_ws('|', name))) STORED UNIQUE KEY NOT NULL,
     PRIMARY KEY (`id`)
@@ -126,9 +126,9 @@ CREATE TABLE IF NOT EXISTS `productListUnNo`
 
 CREATE TABLE IF NOT EXISTS `adr_productListUnNo`
 (
-    `id`                 INT UNSIGNED NOT NULL AUTO_INCREMENT,
-    `adr_id`             INT UNSIGNED NULL,
-    `productListUnNo_id` INT UNSIGNED NULL,
+    `id`                 BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `adr_id`             BIGINT UNSIGNED NULL,
+    `productListUnNo_id` BIGINT UNSIGNED NULL,
     PRIMARY KEY (`id`),
     INDEX `idx_productListUnNo` (`productListUnNo_id` ASC),
     INDEX `idx_adr` (`adr_id` ASC),
