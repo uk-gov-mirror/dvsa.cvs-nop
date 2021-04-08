@@ -340,6 +340,56 @@ CREATE TABLE IF NOT EXISTS `plate`
     ENGINE = InnoDB;
 
 
+CREATE TABLE IF NOT EXISTS `axles`
+(
+    `id`                  INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `technical_record_id` INT UNSIGNED NOT NULL,
+    `tyre_id`             INT UNSIGNED NOT NULL,
+    `axleNumber`          INT          NOT NULL,
+    `parkingBrakeMrk`     TINYINT(1),
+    `kerbWeight`          INT UNSIGNED,
+    `ladenWeight`         INT UNSIGNED,
+    `gbWeight`            INT UNSIGNED,
+    `eecWeight`           INT UNSIGNED,
+    `designWeight`        INT UNSIGNED,
+    `brakeActuator`       INT UNSIGNED,
+    `leverLength`         INT UNSIGNED,
+    `springBrakeParking`  INT UNSIGNED,
+    PRIMARY KEY (`id`),
+    INDEX `idx_technical_record_tyre_id_axleNumber_id` (`technical_record_id` ASC, `tyre_id` ASC, `axleNumber` ASC),
+
+    FOREIGN KEY (`technical_record_id`)
+        REFERENCES `technical_record` (`id`)
+        ON DELETE NO ACTION
+        ON UPDATE NO ACTION,
+
+    FOREIGN KEY (`tyre_id`)
+        REFERENCES `tyre` (`id`)
+        ON DELETE NO ACTION
+        ON UPDATE NO ACTION
+
+)
+    ENGINE = InnoDB;
+
+
+CREATE TABLE IF NOT EXISTS `tyre`
+(
+    `id`                  INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `tyreSize`            VARCHAR(12),
+    `plyRating`           VARCHAR(2),
+    `fitmentCode`         VARCHAR(6),
+    `dataTrAxles`         VARCHAR(45),
+    `speedCategorySymbol` VARCHAR(2),
+    `tyreCode`            INT UNSIGNED,
+    `fingerprint` VARCHAR(32) GENERATED ALWAYS AS (md5(
+            concat_ws('|', IFNULL(`tyreSize`, ''), IFNULL(`plyRating`, ''), IFNULL(`fitmentCode`, ''),
+                      IFNULL(`dataTrAxles`, ''), IFNULL(`speedCategorySymbol`, ''),
+                      IFNULL(`tyreCode`, '')))) STORED UNIQUE KEY NOT NULL,
+    PRIMARY KEY (`id`)
+)
+    ENGINE = InnoDB;
+
+
 CREATE TABLE IF NOT EXISTS `fuel_emission`
 (
     `id`               INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -525,56 +575,6 @@ CREATE TABLE IF NOT EXISTS `custom_defect`
     ENGINE = InnoDB;
 
 
-CREATE TABLE IF NOT EXISTS `axles`
-(
-    `id`                  INT UNSIGNED NOT NULL AUTO_INCREMENT,
-    `technical_record_id` INT UNSIGNED NOT NULL,
-    `tyre_id`             INT UNSIGNED NOT NULL,
-    `axleNumber`          INT          NOT NULL,
-    `parkingBrakeMrk`     TINYINT(1),
-    `kerbWeight`          INT UNSIGNED,
-    `ladenWeight`         INT UNSIGNED,
-    `gbWeight`            INT UNSIGNED,
-    `eecWeight`           INT UNSIGNED,
-    `designWeight`        INT UNSIGNED,
-    `brakeActuator`       INT UNSIGNED,
-    `leverLength`         INT UNSIGNED,
-    `springBrakeParking`  INT UNSIGNED,
-    PRIMARY KEY (`id`),
-    INDEX `idx_technical_record_tyre_id_axleNumber_id` (`technical_record_id` ASC, `tyre_id` ASC, `axleNumber` ASC),
-
-    FOREIGN KEY (`technical_record_id`)
-        REFERENCES `technical_record` (`id`)
-        ON DELETE NO ACTION
-        ON UPDATE NO ACTION,
-
-    FOREIGN KEY (`tyre_id`)
-        REFERENCES `tyre` (`id`)
-        ON DELETE NO ACTION
-        ON UPDATE NO ACTION
-
-)
-    ENGINE = InnoDB;
-
-
-CREATE TABLE IF NOT EXISTS `tyre`
-(
-    `id`                  INT UNSIGNED NOT NULL AUTO_INCREMENT,
-    `tyreSize`            VARCHAR(12),
-    `plyRating`           VARCHAR(2),
-    `fitmentCode`         VARCHAR(6),
-    `dataTrAxles`         VARCHAR(45),
-    `speedCategorySymbol` VARCHAR(2),
-    `tyreCode`            INT UNSIGNED,
-    `fingerprint` VARCHAR(32) GENERATED ALWAYS AS (md5(
-            concat_ws('|', IFNULL(`tyreSize`, ''), IFNULL(`plyRating`, ''), IFNULL(`fitmentCode`, ''),
-                      IFNULL(`dataTrAxles`, ''), IFNULL(`speedCategorySymbol`, ''),
-                      IFNULL(`tyreCode`, '')))) STORED UNIQUE KEY NOT NULL,
-    PRIMARY KEY (`id`)
-)
-    ENGINE = InnoDB;
-
-
 CREATE TABLE IF NOT EXISTS `defect`
 (
     `id`                 INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -648,144 +648,6 @@ CREATE TABLE IF NOT EXISTS `test_defect`
 )
     ENGINE = InnoDB;
 
-
-CREATE TABLE IF NOT EXISTS `adr`
-(
-    `id`                        INT UNSIGNED NOT NULL AUTO_INCREMENT,
-    `technical_record_id`       INT UNSIGNED NOT NULL,
-    `type`                      VARCHAR(45),
-    `approvalDate`              DATE,
-    `listStatementApplicable`   TINYINT(1),
-    `batteryListNumber`         VARCHAR(8),
-    `declarationsSeen`          TINYINT(1),
-    `brakeDeclarationsSeen`     TINYINT(1),
-    `brakeDeclarationIssuer`    TINYINT(1),
-    `brakeEndurance`            TINYINT(1),
-    `weight`                    VARCHAR(8),
-    `compatibilityGroupJ`       TINYINT(1),
-    `additionalExaminerNotes`   VARCHAR(1024),
-    `applicantDetailsName`      VARCHAR(150),
-    `street`                    VARCHAR(150),
-    `town`                      VARCHAR(100),
-    `city`                      VARCHAR(100),
-    `postcode`                  VARCHAR(25),
-    `memosApply`                VARCHAR(45),
-    `adrTypeApprovalNo`         VARCHAR(45),
-    `adrCertificateNotes`       VARCHAR(1500),
-    `tankManufacturer`          VARCHAR(70),
-    `yearOfManufacture`         DATE,
-    `tankCode`                  VARCHAR(30),
-    `specialProvisions`         VARCHAR(1024),
-    `tankManufacturerSerialNo`  VARCHAR(50),
-    `tankTypeAppNo`             VARCHAR(30),
-    `tc2Type`                   VARCHAR(45),
-    `tc2IntermediateApprovalNo` VARCHAR(70),
-    `tc2IntermediateExpiryDate` DATE,
-    `substancesPermitted`       VARCHAR(45),
-    `statement`                 VARCHAR(1500),
-    `productListRefNo`          VARCHAR(45),
-    `productList`               VARCHAR(1500),
-    PRIMARY KEY (`id`),
-
-    FOREIGN KEY (`technical_record_id`)
-        REFERENCES `technical_record` (`id`)
-        ON DELETE NO ACTION
-        ON UPDATE NO ACTION,
-    INDEX `idx_fk_technical_record_id` (`technical_record_id` ASC)
-)
-    ENGINE = InnoDB;
-
-
-CREATE TABLE IF NOT EXISTS `additional_notes_number`
-(
-    `id`          INT UNSIGNED NOT NULL,
-    `number`      VARCHAR(3)   NOT NULL,
-    `fingerprint` VARCHAR(32) GENERATED ALWAYS AS (md5(concat_ws('|', number))) STORED UNIQUE KEY NOT NULL,
-    PRIMARY KEY (`id`),
-    FOREIGN KEY (`id`)
-        REFERENCES `adr` (`id`)
-        ON DELETE NO ACTION
-        ON UPDATE NO ACTION
-)
-    ENGINE = InnoDB;
-
-
-CREATE TABLE IF NOT EXISTS `additional_notes_guidance`
-(
-    `id`            INT UNSIGNED NOT NULL,
-    `guidanceNotes` VARCHAR(25)  NOT NULL,
-    `fingerprint` VARCHAR(32) GENERATED ALWAYS AS (md5(concat_ws('|', guidanceNotes))) STORED UNIQUE KEY NOT NULL,
-    PRIMARY KEY (`id`),
-    FOREIGN KEY (`id`)
-        REFERENCES `adr` (`id`)
-        ON DELETE NO ACTION
-        ON UPDATE NO ACTION
-)
-    ENGINE = InnoDB;
-
-
-CREATE TABLE IF NOT EXISTS `dangerous_goods`
-(
-    `id`          INT UNSIGNED NOT NULL AUTO_INCREMENT,
-    `name`        VARCHAR(32),
-    `fingerprint` VARCHAR(32) GENERATED ALWAYS AS (md5(concat_ws('|', name))) STORED UNIQUE KEY NOT NULL,
-    PRIMARY KEY (`id`)
-)
-    ENGINE = InnoDB;
-
-
-CREATE TABLE IF NOT EXISTS `permitted_dangerous_goods`
-(
-    `id`                 INT UNSIGNED NOT NULL AUTO_INCREMENT,
-    `adr_id`             INT UNSIGNED NOT NULL,
-    `dangerous_goods_id` INT UNSIGNED NOT NULL,
-    PRIMARY KEY (`id`),
-    INDEX `idx_adr_id` (`adr_id` ASC),
-    INDEX `idx_dangerous_goods_id` (`dangerous_goods_id` ASC),
-
-    FOREIGN KEY (`adr_id`)
-        REFERENCES `adr` (`id`)
-        ON DELETE NO ACTION
-        ON UPDATE NO ACTION,
-
-    FOREIGN KEY (`dangerous_goods_id`)
-        REFERENCES `dangerous_goods` (`id`)
-        ON DELETE NO ACTION
-        ON UPDATE NO ACTION
-)
-    ENGINE = InnoDB;
-
-
-CREATE TABLE IF NOT EXISTS `productListUnNo`
-(
-    `id`          INT UNSIGNED NOT NULL AUTO_INCREMENT,
-    `name`        VARCHAR(45),
-    `fingerprint` VARCHAR(32) GENERATED ALWAYS AS (md5(concat_ws('|', name))) STORED UNIQUE KEY NOT NULL,
-    PRIMARY KEY (`id`)
-)
-    ENGINE = InnoDB;
-
-
-CREATE TABLE IF NOT EXISTS `adr_productListUnNo`
-(
-    `id`                 INT UNSIGNED NOT NULL AUTO_INCREMENT,
-    `adr_id`             INT UNSIGNED NULL,
-    `productListUnNo_id` INT UNSIGNED NULL,
-    PRIMARY KEY (`id`),
-    INDEX `idx_productListUnNo` (`productListUnNo_id` ASC),
-    INDEX `idx_adr` (`adr_id` ASC),
-
-    FOREIGN KEY (`productListUnNo_id`)
-        REFERENCES `productListUnNo` (`id`)
-        ON DELETE NO ACTION
-        ON UPDATE NO ACTION,
-
-    FOREIGN KEY (`adr_id`)
-        REFERENCES `adr` (`id`)
-        ON DELETE NO ACTION
-        ON UPDATE NO ACTION
-)
-    ENGINE = InnoDB;
 
 SET SQL_MODE = @OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS = @OLD_FOREIGN_KEY_CHECKS;
