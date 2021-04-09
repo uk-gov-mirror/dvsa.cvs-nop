@@ -16,7 +16,10 @@ CREATE TABLE IF NOT EXISTS `vehicle`
     `trailer_id`    VARCHAR(8),
     `createdAt`     DATETIME,
     PRIMARY KEY (`id`),
-    UNIQUE INDEX `idx_system_number_vin_uq` (`system_number` ASC, `vin` ASC)
+    UNIQUE INDEX `idx_system_number_vin_uq` (`system_number` ASC, `vin` ASC),
+    INDEX `idx_vehicle_vin` (`vin` ASC),
+    INDEX `idx_vehicle_vrm_trm` (`vrm_trm` ASC),
+    INDEX `idx_vehicle_trailer_id` (`trailer_id` ASC)
 )
     ENGINE = InnoDB
     DEFAULT CHARACTER SET = latin1;
@@ -89,7 +92,7 @@ CREATE TABLE IF NOT EXISTS `identity`
             concat_ws('|', IFNULL(`identityId`, ''), IFNULL(`name`, '')))) STORED UNIQUE KEY NOT NULL,
     PRIMARY KEY (`id`),
 
-    INDEX `idx_name` (`name` ASC)
+    INDEX `idx_identity_name` (`name` ASC)
 )
     ENGINE = InnoDB;
 
@@ -503,6 +506,7 @@ CREATE TABLE IF NOT EXISTS test_result
     UNIQUE INDEX `idx_comp_test_result_uq` (`vehicle_id` ASC,`test_type_id` ASC, `createdAt` ASC),
 
     INDEX `idx_vehicle_id` (`vehicle_id` ASC),
+    INDEX `idx_test_number_id` (`testNumber` ASC),
     INDEX `idx_fuel_emission_id` (`fuel_emission_id` ASC),
     INDEX `idx_test_station_id` (`test_station_id` ASC),
     INDEX `idx_tester_id` (`tester_id` ASC),
