@@ -356,7 +356,7 @@ CREATE TABLE IF NOT EXISTS `axles`
     `leverLength`         INT UNSIGNED,
     `springBrakeParking`  INT UNSIGNED,
     PRIMARY KEY (`id`),
-    INDEX `idx_technical_record_tyre_id_axleNumber_id` (`technical_record_id` ASC, `tyre_id` ASC, `axleNumber` ASC),
+    UNIQUE INDEX `idx_technical_record_tyre_id_axleNumber_id` (`technical_record_id` ASC, `tyre_id` ASC, `axleNumber` ASC),
 
     FOREIGN KEY (`technical_record_id`)
         REFERENCES `technical_record` (`id`)
