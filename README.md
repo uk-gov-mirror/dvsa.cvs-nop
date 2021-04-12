@@ -41,7 +41,7 @@ Tables
 
 * `vehicle_class (fg)`
 * `vehicle_subclass (fg)`
-*  `identity (fg)`
+* `identity (fg)`
 
 Technical Record
 
