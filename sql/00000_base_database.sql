@@ -21,8 +21,7 @@ CREATE TABLE IF NOT EXISTS `vehicle`
     INDEX `idx_vehicle_vrm_trm` (`vrm_trm` ASC),
     INDEX `idx_vehicle_trailer_id` (`trailer_id` ASC)
 )
-    ENGINE = InnoDB
-    DEFAULT CHARACTER SET = latin1;
+    ENGINE = InnoDB;
 
 
 CREATE TABLE IF NOT EXISTS `make_model`
