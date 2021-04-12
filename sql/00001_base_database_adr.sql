@@ -58,7 +58,6 @@ CREATE TABLE IF NOT EXISTS `additional_notes_number`
 (
     `id`          BIGINT UNSIGNED NOT NULL,
     `number`      VARCHAR(3)   NOT NULL,
-    `fingerprint` VARCHAR(32) GENERATED ALWAYS AS (md5(concat_ws('|', number))) STORED UNIQUE KEY NOT NULL,
     PRIMARY KEY (`id`),
     FOREIGN KEY (`id`)
         REFERENCES `adr` (`id`)
@@ -72,7 +71,7 @@ CREATE TABLE IF NOT EXISTS `additional_notes_guidance`
 (
     `id`            BIGINT UNSIGNED NOT NULL,
     `guidanceNotes` VARCHAR(25)  NOT NULL,
-    `fingerprint` VARCHAR(32) GENERATED ALWAYS AS (md5(concat_ws('|', guidanceNotes))) STORED UNIQUE KEY NOT NULL,
+    `fingerprint` VARCHAR(32) GENERATED ALWAYS AS (md5( guidanceNotes )) STORED UNIQUE KEY NOT NULL,
     PRIMARY KEY (`id`),
     FOREIGN KEY (`id`)
         REFERENCES `adr` (`id`)
@@ -86,7 +85,7 @@ CREATE TABLE IF NOT EXISTS `dangerous_goods`
 (
     `id`          BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
     `name`        VARCHAR(32),
-    `fingerprint` VARCHAR(32) GENERATED ALWAYS AS (md5(concat_ws('|', name))) STORED UNIQUE KEY NOT NULL,
+    `fingerprint` VARCHAR(32) GENERATED ALWAYS AS (md5( name )) STORED UNIQUE KEY NOT NULL,
     PRIMARY KEY (`id`)
 )
     ENGINE = InnoDB;
@@ -118,7 +117,7 @@ CREATE TABLE IF NOT EXISTS `productListUnNo`
 (
     `id`          BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
     `name`        VARCHAR(45),
-    `fingerprint` VARCHAR(32) GENERATED ALWAYS AS (md5(concat_ws('|', name))) STORED UNIQUE KEY NOT NULL,
+    `fingerprint` VARCHAR(32) GENERATED ALWAYS AS (md5( name )) STORED UNIQUE KEY NOT NULL,
     PRIMARY KEY (`id`)
 )
     ENGINE = InnoDB;
