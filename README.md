@@ -86,3 +86,15 @@ Tables marked (fg) contain a function-based stored virtual column, the function 
 all records (based on concatenated value of all columns without `id` ) that are inserted or updated. The column's value is stored and indexed with unique constraint.
 This allow to lever native database support for upsert syntax `INSERT INTO ... ON DUPLICATE KEY UPDATE`.
 
+4. ADR data set 
+
+This set is not a part of MVP, tables serve as a reference for a future development.  
+
+Tables :
+* `adr`
+* `additional_notes_number`
+* `additional_notes_guidance`
+* `dangerous_goods`
+* `permitted_dangerous_goods`
+* `productListUnNo`
+* `adr_productListUnNo`
