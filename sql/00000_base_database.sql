@@ -356,7 +356,7 @@ CREATE TABLE IF NOT EXISTS `axles`
     `designWeight`        INT UNSIGNED,
     `brakeActuator`       INT UNSIGNED,
     `leverLength`         INT UNSIGNED,
-    `springBrakeParking`  INT UNSIGNED,
+    `springBrakeParking`  TINYINT(1) UNSIGNED,
     PRIMARY KEY (`id`),
     UNIQUE INDEX `idx_technical_record_tyre_id_axleNumber_id_uq` (`technical_record_id` ASC, `tyre_id` ASC, `axleNumber` ASC),
 
