@@ -648,7 +648,8 @@ CREATE TABLE IF NOT EXISTS `test_defect`
         ON DELETE NO ACTION
         ON UPDATE NO ACTION,
 
-    INDEX `idx_test_result_id` (`test_result_id` ASC),
+    UNIQUE INDEX `idx_test_result_id_defect_id_location_id_uq` (`test_result_id` ASC, `defect_id` ASC, `location_id` ASC),
+
     INDEX `idx_defect_id` (`defect_id` ASC),
     INDEX `idx_location_id` (`location_id` ASC)
 )
