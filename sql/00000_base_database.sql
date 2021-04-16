@@ -77,7 +77,9 @@ CREATE TABLE IF NOT EXISTS `vehicle_subclass`
     FOREIGN KEY (`vehicle_class_id`)
         REFERENCES `vehicle_class` (`id`)
         ON DELETE NO ACTION
-        ON UPDATE NO ACTION
+        ON UPDATE NO ACTION,
+
+    INDEX `idx_vehicle_class_id` (`vehicle_class_id` ASC)
 )
     ENGINE = InnoDB;
 
@@ -205,9 +207,6 @@ CREATE TABLE IF NOT EXISTS `technical_record`
     `numberOfSeatbelts`                VARCHAR(99),
     `seatbeltInstallationApprovalDate` DATE,
     PRIMARY KEY (`id`),
-
-    UNIQUE INDEX `idx_vehicle_id_createdAt_uq` (`vehicle_id` ASC, `createdAt` ASC),
-
     FOREIGN KEY (`vehicle_id`)
         REFERENCES `vehicle` (`id`)
         ON DELETE NO ACTION
@@ -248,7 +247,12 @@ CREATE TABLE IF NOT EXISTS `technical_record`
         ON DELETE NO ACTION
         ON UPDATE NO ACTION,
 
+    UNIQUE INDEX `idx_vehicle_id_createdAt_uq` (`vehicle_id` ASC, `createdAt` ASC),
+
     INDEX `idx_vehicle_id` (`vehicle_id` ASC),
+    INDEX `idx_applicant_detail_id` (`applicant_detail_id` ASC),
+    INDEX `idx_purchaser_detail_id` (`purchaser_detail_id` ASC),
+    INDEX `idx_manufacturer_detail_id` (`manufacturer_detail_id` ASC),
     INDEX `idx_make_model_id` (`make_model_id` ASC),
     INDEX `idx_vehicle_class_id` (`vehicle_class_id` ASC),
     INDEX `idx_createdBy_Id` (`createdBy_Id` ASC),
@@ -281,7 +285,6 @@ CREATE TABLE IF NOT EXISTS `psv_brakes`
         ON UPDATE NO ACTION,
 
     UNIQUE INDEX `idx_psv_brakes_technical_record_id_uq` (`technical_record_id` ASC)
-
 )
     ENGINE = InnoDB;
 
@@ -347,7 +350,7 @@ CREATE TABLE IF NOT EXISTS `axles`
     `id`                  BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
     `technical_record_id` BIGINT UNSIGNED NOT NULL,
     `tyre_id`             BIGINT UNSIGNED NOT NULL,
-    `axleNumber`          INT          NOT NULL,
+    `axleNumber`          INT             NOT NULL,
     `parkingBrakeMrk`     TINYINT(1),
     `kerbWeight`          INT UNSIGNED,
     `ladenWeight`         INT UNSIGNED,
@@ -358,8 +361,6 @@ CREATE TABLE IF NOT EXISTS `axles`
     `leverLength`         INT UNSIGNED,
     `springBrakeParking`  TINYINT(1) UNSIGNED,
     PRIMARY KEY (`id`),
-    UNIQUE INDEX `idx_technical_record_tyre_id_axleNumber_id_uq` (`technical_record_id` ASC, `tyre_id` ASC, `axleNumber` ASC),
-
     FOREIGN KEY (`technical_record_id`)
         REFERENCES `technical_record` (`id`)
         ON DELETE NO ACTION
@@ -368,8 +369,10 @@ CREATE TABLE IF NOT EXISTS `axles`
     FOREIGN KEY (`tyre_id`)
         REFERENCES `tyre` (`id`)
         ON DELETE NO ACTION
-        ON UPDATE NO ACTION
+        ON UPDATE NO ACTION,
 
+    UNIQUE INDEX `idx_technical_record_tyre_id_axleNumber_id_uq` (`technical_record_id` ASC, `tyre_id` ASC, `axleNumber` ASC),
+    INDEX `idx_tyre_id` (`tyre_id` ASC)
 )
     ENGINE = InnoDB;
 
@@ -501,17 +504,6 @@ CREATE TABLE IF NOT EXISTS test_result
     `lastUpdatedBy_Id`                  BIGINT UNSIGNED NOT NULL,
 
     PRIMARY KEY (`id`),
-
-    UNIQUE INDEX `idx_comp_test_result_uq` (`vehicle_id` ASC,`test_type_id` ASC, `createdAt` ASC),
-
-    INDEX `idx_vehicle_id` (`vehicle_id` ASC),
-    INDEX `idx_test_number_id` (`testNumber` ASC),
-    INDEX `idx_fuel_emission_id` (`fuel_emission_id` ASC),
-    INDEX `idx_test_station_id` (`test_station_id` ASC),
-    INDEX `idx_tester_id` (`tester_id` ASC),
-    INDEX `idx_vehicle_class_id` (`vehicle_class_id` ASC),
-    INDEX `idx_preparer_id` (`preparer_id` ASC),
-
     FOREIGN KEY (`vehicle_id`)
         REFERENCES `vehicle` (`id`)
         ON DELETE NO ACTION
@@ -555,7 +547,17 @@ CREATE TABLE IF NOT EXISTS test_result
     FOREIGN KEY (`lastUpdatedBy_Id`)
         REFERENCES `identity` (`id`)
         ON DELETE NO ACTION
-        ON UPDATE NO ACTION
+        ON UPDATE NO ACTION,
+
+    UNIQUE INDEX `idx_comp_test_result_uq` (`vehicle_id` ASC,`test_type_id` ASC, `createdAt` ASC),
+
+    INDEX `idx_vehicle_id` (`vehicle_id` ASC),
+    INDEX `idx_test_number_id` (`testNumber` ASC),
+    INDEX `idx_fuel_emission_id` (`fuel_emission_id` ASC),
+    INDEX `idx_test_station_id` (`test_station_id` ASC),
+    INDEX `idx_tester_id` (`tester_id` ASC),
+    INDEX `idx_vehicle_class_id` (`vehicle_class_id` ASC),
+    INDEX `idx_preparer_id` (`preparer_id` ASC)
 )
     ENGINE = InnoDB;
 
@@ -630,9 +632,6 @@ CREATE TABLE IF NOT EXISTS `test_defect`
     `prs`               TINYINT(1),
     `prohibitionIssued` TINYINT(1),
     PRIMARY KEY (`id`),
-    INDEX `idx_test_result_id` (`test_result_id` ASC),
-    INDEX `idx_defect_id` (`defect_id` ASC),
-    INDEX `idx_location_id` (`location_id` ASC),
 
     FOREIGN KEY (`test_result_id`)
         REFERENCES test_result (`id`)
@@ -647,7 +646,11 @@ CREATE TABLE IF NOT EXISTS `test_defect`
     FOREIGN KEY (`location_id`)
         REFERENCES `location` (`id`)
         ON DELETE NO ACTION
-        ON UPDATE NO ACTION
+        ON UPDATE NO ACTION,
+
+    INDEX `idx_test_result_id` (`test_result_id` ASC),
+    INDEX `idx_defect_id` (`defect_id` ASC),
+    INDEX `idx_location_id` (`location_id` ASC)
 )
     ENGINE = InnoDB;
 
