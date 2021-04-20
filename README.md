@@ -6,6 +6,7 @@ Create NO-OP database locally
 
 - installed Liquibase
 - installed MySQL Database Software
+- installed MySQL Connector/J (https://dev.mysql.com/doc/connectors/en/connector-j-binary-installation.html)
 
 ### 1. Liquibase Steps
 
