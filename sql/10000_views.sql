@@ -181,19 +181,19 @@ tech_records_after_test AS (
 -- Join the tech record either side of the test
 vehicle_timeline AS (
 	SELECT	mrt.vehicle_id,
-			mrt.createdAt							AS test_result_createdAt,
-			prov.id									AS provisional_tech_record_id,
-			prov.createdAt 							AS provisional_tech_record_createdAt,
-			COALESCE(prov.grossGbWeight,0)			AS provisional_grossGbWeight,
-			COALESCE(prov.trainGbWeight,0)			AS provisional_trainGbWeight,
-			aft.id 									AS tested_tech_record_id,
-			aft.createdAt 							AS tested_tech_record_createdAt,
-			COALESCE(aft.grossGbWeight,0)			AS tested_grossGbWeight,
-			COALESCE(aft.trainGbWeight,0)			AS tested_trainGbWeight,
-			aft.make								AS tested_make,
-			aft.model								AS tested_model,
-			aft.vehicleConfiguration				AS tested_vehicleConfiguration,
-			aft.wheelplan							AS tested_wheelplan
+			mrt.createdAt AS test_result_createdAt,
+			prov.id AS provisional_tech_record_id,
+			prov.createdAt AS provisional_tech_record_createdAt,
+			COALESCE(prov.grossGbWeight,0) AS provisional_grossGbWeight,
+			COALESCE(prov.trainGbWeight,0) AS provisional_trainGbWeight,
+			aft.id AS tested_tech_record_id,
+			aft.createdAt AS tested_tech_record_createdAt,
+			COALESCE(aft.grossGbWeight,0) AS tested_grossGbWeight,
+			COALESCE(aft.trainGbWeight,0) AS tested_trainGbWeight,
+			aft.make AS tested_make,
+			aft.model AS tested_model,
+			aft.vehicleConfiguration AS tested_vehicleConfiguration,
+			aft.wheelplan AS tested_wheelplan
 	FROM	most_recent_test mrt
 	JOIN	tech_records_before_test 				AS prov
 			ON mrt.vehicle_id = prov.vehicle_id
@@ -206,28 +206,28 @@ vehicle_timeline AS (
 -- Only include records where the weight is different between the tech records
 final_dataset AS(
 	SELECT	v.vrm_trm,
-			tested_make 					AS make,
-			tested_model 					AS model,
-			UPPER(tested_wheelplan) 		AS wheelplan,
+			tested_make AS make,
+			tested_model AS model,
+			UPPER(tested_wheelplan) AS wheelplan,
 	CASE
 		WHEN tested_vehicleConfiguration = 'rigid'
 			THEN provisional_grossGbWeight
 		WHEN tested_vehicleConfiguration = 'articulated'
 			THEN provisional_trainGbWeight
-	END										AS weight_before_test,
+	END AS weight_before_test,
 	CASE
 		WHEN tested_vehicleConfiguration = 'rigid'
 			THEN tested_grossGbWeight
 		WHEN tested_vehicleConfiguration = 'articulated'
 			THEN tested_trainGbWeight
-	END										AS weight_after_test,
-	'1111'									AS DOE_reference,
+	END AS weight_after_test,
+	'1111' AS DOE_reference,
 	provisional_tech_record_createdAt,
 	test_result_createdAt,
 	tested_tech_record_createdAt
 	FROM	vehicle_timeline vt
 	JOIN	vehicle v
-			ON vt.vehicle_id = v.id
+            ON vt.vehicle_id = v.id
 	WHERE
 		CASE
 			WHEN tested_vehicleConfiguration = 'rigid'
@@ -244,10 +244,10 @@ SELECT		vrm_trm,
 			make,
 			model,
 			wheelplan,
-			test_result_createdAt			AS test_date,
+			test_result_createdAt AS test_date,
 			weight_before_test,
 			weight_after_test,
 			DOE_reference,
-			tested_tech_record_createdAt	AS tech_record_date
+			tested_tech_record_createdAt AS tech_record_date
 FROM		final_dataset
 ORDER BY	test_result_createdAt ASC
