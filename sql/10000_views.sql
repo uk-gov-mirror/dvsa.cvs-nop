@@ -107,6 +107,7 @@ FROM
 CREATE OR REPLACE VIEW vw_dvla_ants AS
 
 -- Get the test IDs of the specific tests we're interested in
+-- Get the test IDs of the specific tests we're interested in
 WITH na_test_type_id AS (
 	SELECT	id
 	FROM	test_type
@@ -124,6 +125,7 @@ ranked_tests AS
 	FROM	test_result
 	WHERE	test_type_id IN (SELECT id FROM na_test_type_id)
 	AND		LOWER(testResult) IN ('pass', 'prs')
+	AND		createdAt >= '2024-01-01'
 ),
 
 -- Getting the most recent test
@@ -190,7 +192,7 @@ vehicle_timeline AS (
 			COALESCE(aft.trainGbWeight,0)			AS tested_trainGbWeight,
 			aft.make								AS tested_make,
 			aft.model								AS tested_model,
-			avg.vehicleConfiguration				AS tested_vehicleConfiguration,
+			aft.vehicleConfiguration				AS tested_vehicleConfiguration,
 			aft.wheelplan							AS tested_wheelplan
 	FROM	most_recent_test mrt
 	JOIN	tech_records_before_test 				AS prov
