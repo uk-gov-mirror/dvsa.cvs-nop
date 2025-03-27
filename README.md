@@ -22,7 +22,7 @@ password: password
 classpath: mysql-connector-java-8.0.23.jar
 ```
 
-B. Once database is up and running (database user needs to have privileges in order to create database objects)
+B. Once database is up andunning (database user needs to have privileges in order to create database objects)
 
 Run: ``liquibase --defaultsFile liquibase.properties --changeLogFile changelog-master.xml update``
 
@@ -32,7 +32,8 @@ Running without configuration file (provide missing paths / user credentials):
 
 Quick step to instantiate database in Docker:
 
-`docker run --name local-mysql -e MYSQL_ROOT_PASSWORD=password -p3306:3306 -d mysql:5.7`
+Use mysql version 8. Previously this was specifically using 5.7.
+`docker run --name local-mysql -e MYSQL_ROOT_PASSWORD=password -p3306:3306 -d mysql:8`
 
 ### 2. Schema Inventory
 
