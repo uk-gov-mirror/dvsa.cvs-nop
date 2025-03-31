@@ -2,6 +2,12 @@
 
 Create NO-OP database locally
 
+## Script setup for Ubuntu distributions:
+A setup script is provided `nop-setup.sh` to install all dependencies, start a docker container, and run the liquibase changesets.
+
+
+## Manual setup:
+
 ### Prerequisites :
 
 - installed Liquibase
