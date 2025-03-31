@@ -2,6 +2,12 @@
 
 Create NO-OP database locally
 
+## Script setup for Ubuntu distributions:
+A setup script is provided `nop-setup.sh` to install all dependencies, start a docker container, and run the liquibase changesets.
+
+
+## Manual setup:
+
 ### Prerequisites :
 
 - installed Liquibase
@@ -34,6 +40,13 @@ Quick step to instantiate database in Docker:
 
 Use mysql version 8. Previously this was specifically using 5.7.
 `docker run --name local-mysql -e MYSQL_ROOT_PASSWORD=password -p3306:3306 -d mysql:8`
+If you wish to connect to the docker container with tools like mysql workbench, these tools themselves communicate on port 3306 and thus rely on that port being open.
+For this use case, you must change the host port used by the docker container above:
+`-p<host-port><container-port>`
+For example:
+`-p3307:3306`
+And then direct mysql workbench (or whatever other tool) to use port 3307 on localhost. Note, when changing the host port used by the docker container
+you must also change the liquibase properties above to use this port too.
 
 ### 2. Schema Inventory
 
