@@ -28,7 +28,7 @@ password: password
 classpath: mysql-connector-java-8.0.23.jar
 ```
 
-B. Once database is up andunning (database user needs to have privileges in order to create database objects)
+B. Once database is up and running(database user needs to have privileges in order to create database objects)
 
 Run: ``liquibase --defaultsFile liquibase.properties --changeLogFile changelog-master.xml update``
 
