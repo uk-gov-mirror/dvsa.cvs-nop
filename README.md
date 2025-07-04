@@ -14,6 +14,23 @@ A setup script is provided `nop-setup.sh` to install all dependencies, start a d
 - installed MySQL Database Software
 - installed MySQL Connector/J (https://dev.mysql.com/doc/connectors/en/connector-j-binary-installation.html)
 
+
+### 0. Database setup
+We rely on having a local database setup to run our liquibase changesets against. 
+
+This can be done using mysql directly or can be done with docker like so:
+`docker run --name local-mysql -e MYSQL_ROOT_PASSWORD=password -p3306:3306 -d mysql:8`
+
+The following known issues exist with this approach:
+1. The container spins up without error but you cannot connect to it.
+2. The container fails to start due to another process using port 3306 on your machine.
+
+Both of these issues have a common fix. That is to use another port for our database.
+The below command is identical to the one above except we use the **host** port 3307 as opposed to 3306.
+`docker run --name local-mysql -e MYSQL_ROOT_PASSWORD=password -p3307:3306 -d mysql:8`
+When then connecting to this database, be that with MySQL workbench or liquibase itself you will need to change the port used there from 3306 to 3307.
+- If this does not resolve the issue and you are still having issues with port's clashing then you can run `sudo lsof -i :<PORT>` to see what procees(es) are using port <PORT>.
+
 ### 1. Liquibase Steps
 
 A. Create configuration file
@@ -38,15 +55,6 @@ Running without configuration file (provide missing paths / user credentials):
 
 Quick step to instantiate database in Docker:
 
-Use mysql version 8. Previously this was specifically using 5.7.
-`docker run --name local-mysql -e MYSQL_ROOT_PASSWORD=password -p3306:3306 -d mysql:8`
-If you wish to connect to the docker container with tools like mysql workbench, these tools themselves communicate on port 3306 and thus rely on that port being open.
-For this use case, you must change the host port used by the docker container above:
-`-p<host-port><container-port>`
-For example:
-`-p3307:3306`
-And then direct mysql workbench (or whatever other tool) to use port 3307 on localhost. Note, when changing the host port used by the docker container
-you must also change the liquibase properties above to use this port too.
 
 ### 2. Schema Inventory
 
