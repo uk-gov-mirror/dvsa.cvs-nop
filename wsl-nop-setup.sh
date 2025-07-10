@@ -1,3 +1,4 @@
+### WARNING: THESE INSTRUCTIONS ARE FOR WSL ONLY 
 # Install liquibase
 wget -O- https://repo.liquibase.com/liquibase.asc | gpg --dearmor > liquibase-keyring.gpg && \
 cat liquibase-keyring.gpg | sudo tee /usr/share/keyrings/liquibase-keyring.gpg > /dev/null && \
