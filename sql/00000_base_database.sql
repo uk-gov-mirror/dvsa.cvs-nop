@@ -712,7 +712,16 @@ CREATE TABLE IF NOT EXISTS `testtype_version`
     INDEX `idx_testtype_vehicle_id` (`vehicle_id` ASC)
 
 )
-    ENGINE = InnoDB;
+
+CREATE TABLE IF NOT EXISTS `Image`
+(
+    `id`                                BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `imageFileData`                     MEDIUMBLOB NOT NULl,
+    PRIMARY KEY (`id`),
+    UNIQUE (id)
+);
+
+ENGINE = InnoDB;
 
 SET SQL_MODE = @OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS = @OLD_FOREIGN_KEY_CHECKS;
