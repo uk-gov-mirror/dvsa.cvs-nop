@@ -4,7 +4,7 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
-    <include  file="sql/00000_base_database.sql" relativeToChangelogFile="false"/>
+    <include  file="sql/00000_base_database.sql" relativeToChangelogFile="true"/>
     <include  file="sql/00001_base_database_adr.sql" relativeToChangelogFile="true"/>
     <include  file="sql/00002_test_result_audit_test_type_version_trigger.sql" relativeToChangelogFile="true"/>
     <include  file="sql/00003_test_result_audit_test_type_version_trigger.sql" relativeToChangelogFile="true"/>
@@ -17,6 +17,7 @@
     <include  file="sql/00010_fix_auth_into_service_column_names.sql" relativeToChangelogFile="true"/>
     <include  file="sql/00011_alter_test_result_add_vrm.sql" relativeToChangelogFile="true"/>
     <include  file="sql/00012_alter_variant_number_character.sql" relativeToChangelogFile="true"/>
+    <include  file="sql/00013_image.sql" relativeToChangelogFile="true"/>
     <include  file="sql/10000_views.sql" relativeToChangelogFile="true"/>
     <include  file="sql/10001_tfl_views.sql" relativeToChangelogFile="true"/>
     <include  file="sql/20000_evl_temporary_tweak_sp.sql" relativeToChangelogFile="true"/>
