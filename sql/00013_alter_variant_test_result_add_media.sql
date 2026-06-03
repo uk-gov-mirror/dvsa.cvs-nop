@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS `defect_media`
     `id`             BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
     `test_defect_id` BIGINT UNSIGNED NOT NULL,
     `path`           VARCHAR(150) NOT NULL,
-    `reason`         VARCHAR(500) NOT NULL,
+    `reason`         VARCHAR(500) NULL,
     `media_type_id`  BIGINT UNSIGNED NOT NULL,
     PRIMARY KEY (`id`),
     FOREIGN KEY (`test_defect_id`)
@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS `test_result_media`
     `id`             BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
     `test_result_id` BIGINT UNSIGNED NOT NULL,
     `path`           VARCHAR(150) NOT NULL,
-    `reason`         VARCHAR(500) NOT NULL,
+    `reason`         VARCHAR(500) NULL,
     `media_type_id`  BIGINT UNSIGNED NOT NULL,
     PRIMARY KEY (`id`),
     FOREIGN KEY (`test_result_id`)
