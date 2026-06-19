@@ -5,7 +5,10 @@ CREATE TABLE IF NOT EXISTS `media_type`
 (
     `id`          BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
     `type`        VARCHAR(10) NOT NULL,
-    PRIMARY KEY (`id`)
+    PRIMARY KEY (`id`),
+
+    UNIQUE INDEX `idx_media_type_uq` (`type`)
+
 )
     ENGINE = InnoDB;
 
