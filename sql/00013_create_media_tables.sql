@@ -1,5 +1,5 @@
 --liquibase formatted sql
---changeset liquibase:add-media-columns -multiple-tables:1 splitStatements:true endDelimiter:; context:dev
+--changeset liquibase:add-media-tables -multiple-tables:1 splitStatements:true endDelimiter:; context:dev
 
 CREATE TABLE IF NOT EXISTS `media_type`
 (
