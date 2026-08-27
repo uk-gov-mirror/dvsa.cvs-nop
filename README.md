@@ -100,16 +100,31 @@ Test Result
 
 *  `custom_defect`
 *  `defect (fg)`
+*  `defect_media`
+*  `hazard_classification (fg)`
+*  `load_status`
+*  `media_type`
+*  `reason_for_not_loading`
 *  `test_defect`
 *  `test_result`
+*  `test_result_media`
+*  `unladen_body_type`
+*  `vehicle_load_status`
+*  `vtg15 (fg)`
+*  `vtg15_media (fg)`
 
 *(fg) - tables with `fingerprint` virtual column
 
-3.3. Fingerprints 
+VTG15 data is linked to `test_result`. `hazard_classification` stores the classification `code` and `description`, and `vtg15_media` links VTG15 records to existing `media_type` entries.
+Media data is stored in `defect_media`, `test_result_media`, and `vtg15_media`, with `media_type` holding the shared media type lookup values.
+Load status data is linked to `test_result` through `load_status`, with lookup values held in `vehicle_load_status`, `unladen_body_type`, and `reason_for_not_loading`.
+
+2.3. Fingerprints 
 
 Tables marked (fg) contain a function-based stored virtual column, the function derives a hash key for
 all records (based on concatenated value of all columns without `id` ) that are inserted or updated. The column's value is stored and indexed with unique constraint.
-This allow to lever native database support for upsert syntax `INSERT INTO ... ON DUPLICATE KEY UPDATE`.
+Nullable columns are normalised with `IFNULL` when generating fingerprints, so duplicate records with `NULL` values are still detected.
+This allows native database support for upsert syntax `INSERT INTO ... ON DUPLICATE KEY UPDATE`.
 
 4. ADR data set 
 
