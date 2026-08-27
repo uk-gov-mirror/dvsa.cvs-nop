@@ -20,6 +20,7 @@
     <include  file="sql/00013_create_media_tables.sql" relativeToChangelogFile="true"/>
     <include  file="sql/00014_alter_custom_defect_table.sql" relativeToChangelogFile="true"/>
     <include  file="sql/00015_create_vehicle_load_status_table.sql" relativeToChangelogFile="true"/>
+    <include  file="sql/00016_create_vtg15_tables.sql" relativeToChangelogFile="true"/>
     <include  file="sql/10000_views.sql" relativeToChangelogFile="true"/>
     <include  file="sql/10001_tfl_views.sql" relativeToChangelogFile="true"/>
     <include  file="sql/20000_evl_temporary_tweak_sp.sql" relativeToChangelogFile="true"/>
