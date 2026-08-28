@@ -2,7 +2,7 @@
 --changeset liquibase:addTables -multiple-tables:1 splitStatements:true endDelimiter:; context:dev
 
 CREATE TABLE IF NOT EXISTS `hazard_classification` (
-    `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `id` TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
     `code` VARCHAR(3) NOT NULL,
     `description` VARCHAR(30) NOT NULL,
     `fingerprint` VARCHAR(32) GENERATED ALWAYS AS (md5(
@@ -14,9 +14,9 @@ CREATE TABLE IF NOT EXISTS `vtg15` (
     `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
     `test_result_id` BIGINT UNSIGNED NOT NULL,
     `vtg15Required` TINYINT(1) NOT NULL,
-    `unNumber` VARCHAR(4) NULL,
-    `primary_hazard_classification_id` BIGINT UNSIGNED NULL,
-    `secondary_hazard_classification_id` BIGINT UNSIGNED NULL,
+    `unNumber` SMALLINT UNSIGNED NULL,
+    `primary_hazard_classification_id` TINYINT UNSIGNED NULL,
+    `secondary_hazard_classification_id` TINYINT UNSIGNED NULL,
     `fingerprint` VARCHAR(32) GENERATED ALWAYS AS (md5(
             concat_ws('|', IFNULL(`test_result_id`, ''), IFNULL(`vtg15Required`, ''), IFNULL(`unNumber`, ''),
                       IFNULL(`primary_hazard_classification_id`, ''),
@@ -36,13 +36,6 @@ CREATE TABLE IF NOT EXISTS `vtg15` (
         REFERENCES hazard_classification (`id`)
         ON DELETE NO ACTION
         ON UPDATE NO ACTION,
-
-    CONSTRAINT `chk_vtg15_primary_hazard_classification_required`
-        CHECK (`vtg15Required` <> 1 OR `primary_hazard_classification_id` IS NOT NULL),
-    CONSTRAINT `chk_vtg15_un_number_required`
-        CHECK (`vtg15Required` <> 1 OR `unNumber` IS NOT NULL),
-    CONSTRAINT `chk_vtg15_un_number_4_digits`
-        CHECK (`unNumber` IS NULL OR `unNumber` REGEXP '^[0-9]{1,4}$'),
 
     INDEX `idx_vtg15_test_result_id` (`test_result_id` ASC),
     INDEX `idx_vtg15_primary_hazard_classification_id` (`primary_hazard_classification_id` ASC),
