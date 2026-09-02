@@ -13,12 +13,12 @@ CREATE TABLE IF NOT EXISTS `hazard_classification` (
 CREATE TABLE IF NOT EXISTS `vtg15` (
     `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
     `test_result_id` BIGINT UNSIGNED NOT NULL,
-    `vtg15Required` TINYINT(1) NOT NULL,
-    `unNumber` SMALLINT UNSIGNED NULL,
+    `vtg15_required` TINYINT(1) NOT NULL,
+    `un_number` SMALLINT UNSIGNED NULL,
     `primary_hazard_classification_id` TINYINT UNSIGNED NULL,
     `secondary_hazard_classification_id` TINYINT UNSIGNED NULL,
     `fingerprint` VARCHAR(32) GENERATED ALWAYS AS (md5(
-            concat_ws('|', IFNULL(`test_result_id`, ''), IFNULL(`vtg15Required`, ''), IFNULL(`unNumber`, ''),
+            concat_ws('|', IFNULL(`test_result_id`, ''), IFNULL(`vtg15_required`, ''), IFNULL(`un_number`, ''),
                       IFNULL(`primary_hazard_classification_id`, ''),
                       IFNULL(`secondary_hazard_classification_id`, '')))) STORED UNIQUE KEY NOT NULL,
     PRIMARY KEY (`id`),
