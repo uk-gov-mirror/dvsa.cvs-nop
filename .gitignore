@@ -1,4 +1,5 @@
 .DS_Store
 .idea
 liquibase.properties
+liquibase-keyring.gpg
 mysql-connector-j*
