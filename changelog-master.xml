@@ -21,5 +21,6 @@
     <include  file="sql/00015_create_vehicle_load_status_table.sql" relativeToChangelogFile="true"/>
     <include  file="sql/10000_views.sql" relativeToChangelogFile="true"/>
     <include  file="sql/10001_tfl_views.sql" relativeToChangelogFile="true"/>
+    <include  file="sql/20001_remove_evl_interim_views.sql" relativeToChangelogFile="true"/>
     <include  file="referenceData/referenceData.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>
