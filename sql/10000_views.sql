@@ -41,7 +41,7 @@ CREATE OR REPLACE VIEW evl_view AS
                     AND t.certificateNumber != ''
                     AND NOT LOCATE(' ', t.certificateNumber) > 0
                     )
-        ) vt_cvs_union
+        ) evl_data
     ) windowed_evl_data
     WHERE rownumber = 1
     ORDER BY
