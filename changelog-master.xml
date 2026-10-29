@@ -11,6 +11,7 @@
     <include  file="sql/00004_auth_into_service_table.sql" relativeToChangelogFile="true"/>
     <include  file="sql/00005_approval_region_table.sql" relativeToChangelogFile="true"/>
     <include  file="sql/00006_alter_technical_record_table.sql" relativeToChangelogFile="true"/>
+    <include  file="sql/00007_create_interim_fix_evl_tables.sql" relativeToChangelogFile="true"/>
     <include  file="sql/00008_alter_make_model_table.sql" relativeToChangelogFile="true"/>
     <include  file="sql/00009_alter_plateSerialNumber_field.sql" relativeToChangelogFile="true"/>
     <include  file="sql/00010_fix_auth_into_service_column_names.sql" relativeToChangelogFile="true"/>
